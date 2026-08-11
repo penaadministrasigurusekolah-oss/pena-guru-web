@@ -44,11 +44,16 @@ const PaymentHandler = {
             return;
         }
 
+        const emailInputArea = document.getElementById('email-input-area');
+        if (emailInputArea) {
+            emailInputArea.innerHTML = `<div class="text-amber-700 font-bold text-[11px] mt-1 animate-pulse">⏳ Memproses pengiriman kunci ke email...</div>`;
+        }
+
+        // Tembak URL Google Cloud
         fetch(`${urlGoogleCloud}?email=${encodeURIComponent(email.trim())}&key=${kunci}&berkas=${encodeURIComponent(berkas)}`, { mode: 'no-cors' })
         .then(() => {
-            const emailInputArea = document.getElementById('email-input-area');
             if (emailInputArea) {
-                emailInputArea.innerHTML = `<div class="text-emerald-700 font-bold text-[11px] mt-1">✨ Kunci sukses dikirim ke email! Cek kotak masuk/spam.</div>`;
+                emailInputArea.innerHTML = `<div class="text-emerald-700 font-bold text-[11px] mt-1">✨ Kunci dikirim ke ${email.trim()}! Cek kotak masuk/spam.</div>`;
             }
             const stepKunci = document.getElementById('wrapper-step-kunci');
             if (stepKunci) {
@@ -58,6 +63,9 @@ const PaymentHandler = {
         })
         .catch(err => {
             console.error("Gagal menghubungi Google Server:", err);
+            if (emailInputArea) {
+                emailInputArea.innerHTML = `<div class="text-rose-600 font-bold text-[10px] mt-1">⚠️ Gagal mengirim otomatis. Silakan gunakan bantuan tiket di bawah.</div>`;
+            }
             const stepKunci = document.getElementById('wrapper-step-kunci');
             if (stepKunci) stepKunci.classList.remove('hidden');
         });
