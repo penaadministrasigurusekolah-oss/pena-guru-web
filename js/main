@@ -1,0 +1,29 @@
+/**
+ * PENA-GURU - MAIN JAVASCRIPT ENGINE
+ * Fungsi: Memuat komponen header/footer otomatis & navigasi global
+ */
+
+// Fungsi untuk memuat file HTML komponen ke dalam elemen placeholder
+async function muatKomponen(idElemen, jalurFile) {
+  try {
+    const respon = await fetch(jalurFile);
+    if (respon.ok) {
+      const html = await respon.text();
+      const wadah = document.getElementById(idElemen);
+      if (wadah) {
+        wadah.innerHTML = html;
+      }
+    } else {
+      console.warn(`Gagal memuat komponen dari ${jalurFile}: Status ${respon.status}`);
+    }
+  } catch (error) {
+    console.error(`Error saat memuat ${jalurFile}:`, error);
+  }
+}
+
+// Jalankan otomatis saat halaman selesai dimuat sepenuhnya
+document.addEventListener("DOMContentLoaded", () => {
+  // Memuat Header dan Footer otomatis jika wadah pembungkusnya ada di halaman
+  muatKomponen("header-container", "assets/components/header.html");
+  muatKomponen("footer-container", "assets/components/footer.html");
+});
