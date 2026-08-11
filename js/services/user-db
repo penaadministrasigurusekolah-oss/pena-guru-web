@@ -1,0 +1,58 @@
+/**
+ * Pena Administrasi Guru & Sekolah - User Database & Feature Access Manager
+ * Mengelola memori lokal pengguna dan validasi tingkatan premium (Guru vs Lembaga)
+ */
+
+const UserDB = {
+    // Mengambil data user aktif dari localStorage
+    getCurrentUser: function() {
+        const userRaw = localStorage.getItem('pena_current_user');
+        return userRaw ? JSON.parse(userRaw) : null;
+    },
+
+    // Menyimpan atau memperbarui data user aktif ke localStorage
+    saveCurrentUser: function(userObj) {
+        localStorage.setItem('pena_current_user', JSON.stringify(userObj));
+    },
+
+    // 🌟 POIN B: MENGECEK HAK AKSES PREMIUM BERDASARKAN KATEGORI FITUR
+    hasPremiumAccess: function(kategoriFitur) {
+        // Jika ada bypass premium global lama, otomatis izinkan semua berkas
+        if (localStorage.getItem('pena_user_premium') === 'true') return true;
+        
+        const user = this.getCurrentUser();
+        if (!user || !user.paketAktif) return false;
+
+        // Validasi kedaluwarsa paket secara real-time
+        const hariIni = new Date();
+        const tanggalExpired = new Date(user.expiredDate);
+        if (hariIni > tanggalExpired) {
+            return false; // Paket sudah hangus
+        }
+
+        // Pembagian Hak Akses Fleksibel Sesuai Realitas Kebutuhan di Lapangan
+        if (kategoriFitur === 'Guru') {
+            // Semua paket berlangganan (1, 3, 6, atau 12 bulan) berhak mengakses menu Guru
+            return ['premium-1-bulan', 'premium-3-bulan', 'premium-6-bulan', 'premium-12-bulan'].includes(user.paketAktif);
+        }
+        
+        if (kategoriFitur === 'Lembaga') {
+            // Hanya paket makro (6 bulan/Semester & 12 bulan/1 Tahun Ajaran) yang bisa membuka menu Sekolah
+            return ['premium-6-bulan', 'premium-12-bulan'].includes(user.paketAktif);
+        }
+
+        return false;
+    },
+
+    // Mengecek apakah suatu dokumen tertentu berstatus Unlocked (Eceran atau Premium)
+    isDocUnlocked: function(berkasId, kategoriFitur) {
+        // 1. Jika pengguna memiliki paket langganan yang mencakup fitur tersebut, otomatis terbuka
+        if (this.hasPremiumAccess(kategoriFitur)) return true; 
+        
+        // 2. Jika tidak langganan, cek apakah ada riwayat pembelian eceran satuan untuk berkas spesifik ini
+        return localStorage.getItem(`pena_unlock_${berkasId}`) === 'true';
+    }
+};
+
+// Bekukan objek agar aman dari manipulasi runtime
+Object.freeze(UserDB);
