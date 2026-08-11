@@ -16,16 +16,6 @@
             from { opacity: 0; transform: translateY(-4px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        select.form-select {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.5rem center;
-            background-repeat: no-repeat;
-            background-size: 1.5em 1.5em;
-            padding-right: 2.5rem;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-800 flex flex-col justify-between">
@@ -78,23 +68,13 @@
                         
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-500 mb-1">Karakteristik Satuan Pendidikan</label>
-                            <select id="selectKarakteristik" onchange="handleKarakteristikLembaga()" class="form-select w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
-                                <option value="reguler" selected>Sekolah Reguler / Umum</option>
-                                <option value="pesisir">Sekolah Daerah Pesisir / Pertanian / Perkebunan</option>
-                                <option value="tertinggal">Sekolah Daerah 3T (Tertinggal, Terdepan, Terluar)</option>
-                                <option value="inklusi">Sekolah Inklusi / Penyelenggara ABK</option>
-                                <option value="slb">Sekolah Luar Biasa (SLB)</option>
+                            <select id="selectKarakteristik" onchange="handleKarakteristikLembaga()" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
                             </select>
                         </div>
 
                         <div id="blokHambatanSLB" class="hidden space-y-1 animate-fade-in">
                             <label class="block text-[11px] font-semibold text-amber-600 mb-1">Kategori Hambatan Dominan Peserta Didik</label>
-                            <select id="selectHambatan" class="form-select w-full bg-white border border-amber-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-amber-500 bg-amber-50/10">
-                                <option value="netra">Hambatan Penglihatan (Hambatan Netra)</option>
-                                <option value="rungu">Hambatan Pendengaran (Hambatan Rungu)</option>
-                                <option value="grahita">Hambatan Intelektual (Hambatan Grahita)</option>
-                                <option value="daksa">Hambatan Anggota Gerak (Hambatan Daksa)</option>
-                                <option value="autis">Autisme / Spektrum Autis</option>
+                            <select id="selectHambatan" class="w-full bg-white border border-amber-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-amber-500 bg-amber-50/10">
                             </select>
                         </div>
 
@@ -112,7 +92,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-500 mb-1">Pilih Tingkatan Jenjang & Fase Kelas</label>
-                                <select id="selectJenjang" onchange="updateOpsiTurunan()" class="form-select w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                                <select id="selectJenjang" onchange="updateOpsiTurunan()" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
                                     <option value="">-- Pilih Tingkat Kelas --</option>
                                     <optgroup label="TK / PAUD (Fase Fondasi)">
                                         <option value="TK-A">Fase Fondasi - TK Kelompok A (Usia 4-5 Tahun)</option>
@@ -140,8 +120,8 @@
                             </div>
                             <div>
                                 <label id="lblDinamis" class="block text-[11px] font-semibold text-slate-500 mb-1">Mata Pelajaran (Mapel)</label>
-                                <select id="selectDinamis" onchange="checkOpsiOther()" class="form-select w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
-                                    <option value="">-- Pilih Tingkat Kelas Terlebih Dahulu --</option>
+                                <select id="selectDinamis" onchange="checkOpsiOther()" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                                    <option value="">-- Pilih Tingkat Terlebih Dahulu --</option>
                                 </select>
                             </div>
                         </div>
@@ -155,7 +135,7 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div class="md:col-span-1">
                                     <label class="block text-[11px] font-semibold text-slate-500 mb-1">Rentang Waktu Modul</label>
-                                    <select id="selectRentangWaktu" class="form-select w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                                    <select id="selectRentangWaktu" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
                                         <option value="Pertemuan">Per Pertemuan (1-2 Tatap Muka)</option>
                                         <option value="MateriUtuh">Satu Materi Pokok Utuh (Bab)</option>
                                         <option value="Semester">Satu Semester Penuh</option>
@@ -175,11 +155,6 @@
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-500 mb-2">Jenis Berkas Perangkat Guru yang Ingin Dihasilkan AI</label>
                                 <div id="wrapperCheckboxGuru" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 text-[11px]">
-                                    <label class="flex items-center space-x-1.5 bg-white p-2 border border-slate-200 rounded-lg cursor-pointer"><input type="checkbox" name="outGuru" value="modul_ajar" checked class="accent-emerald-600"> <span>Modul Ajar</span></label>
-                                    <label class="flex items-center space-x-1.5 bg-white p-2 border border-slate-200 rounded-lg cursor-pointer"><input type="checkbox" name="outGuru" value="atp" class="accent-emerald-600"> <span>Alur Tujuan (ATP)</span></label>
-                                    <label class="flex items-center space-x-1.5 bg-white p-2 border border-slate-200 rounded-lg cursor-pointer"><input type="checkbox" name="outGuru" value="lkpd" class="accent-emerald-600"> <span>LKPD Siswa</span></label>
-                                    <label class="flex items-center space-x-1.5 bg-white p-2 border border-slate-200 rounded-lg cursor-pointer"><input type="checkbox" name="outGuru" value="rubrik" class="accent-emerald-600"> <span>Rubrik Asesmen</span></label>
-                                    <label class="flex items-center space-x-1.5 bg-white p-2 border border-slate-200 rounded-lg cursor-pointer"><input type="checkbox" name="outGuru" value="media" class="accent-emerald-600"> <span>Media Ajar</span></label>
                                 </div>
                             </div>
                         </div>
@@ -187,14 +162,14 @@
                         <div id="blokLegalitasLembaga" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 pt-2 animate-fade-in">
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-500 mb-1">Tahun Ajaran</label>
-                                <select id="selectTahunAjaran" class="form-select w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-blue-500">
+                                <select id="selectTahunAjaran" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-blue-500">
                                     <option value="2026/2027">2026/2027</option>
                                     <option value="2027/2028">2027/2028</option>
                                 </select>
                             </div>
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-500 mb-1">Semester Berlaku Berkas</label>
-                                <select id="selectSemester" class="form-select w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-blue-500">
+                                <select id="selectSemester" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-blue-500">
                                     <option value="Ganjil">Semester Ganjil</option>
                                     <option value="Genap">Semester Genap</option>
                                 </select>
@@ -224,7 +199,7 @@
 
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-500 mb-1">Fokus Indikator Rapor Pendidikan yang Ingin Dibenahi / Diintervensi</label>
-                            <select id="selectFokusRapor" class="form-select w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                            <select id="selectFokusRapor" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
                                 <option value="Umum">Umum (Pengembangan Standar Kurikulum Reguler)</option>
                                 <option value="Literasi">Kemampuan Literasi (Penguatan Analisis Teks Mendalam)</option>
                                 <option value="Numerasi">Kemampuan Numerasi (Penguatan Penalaran Matematis Kontekstual)</option>
@@ -294,8 +269,8 @@
                     </div>
 
                     <div class="flex items-center space-x-3 pt-2">
-                        <button type="button" onclick="prosesGenerateAI()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-sm">
-                            ✨ Jalankan Asisten Pemrosesan AI Gratisan
+                        <button type="button" id="btnSubmitAI" onclick="prosesGenerateAI()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-sm flex items-center justify-center gap-2">
+                            <span id="btnText">✨ Jalankan Asisten Pemrosesan AI Gratisan</span>
                         </button>
                         <button type="button" onclick="resetFormulir()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold py-3 px-4 rounded-xl text-xs transition">
                             Reset Form
@@ -351,8 +326,8 @@
 
         function initKarakteristikLembaga() {
             const selectK = document.getElementById('selectKarakteristik');
-            if (typeof DATA_SISTEM !== 'undefined' && DATA_SISTEM.karakteristikLembaga && DATA_SISTEM.karakteristikLembaga.length > 0) {
-                selectK.innerHTML = "";
+            selectK.innerHTML = "";
+            if (typeof DATA_SISTEM !== 'undefined' && DATA_SISTEM.karakteristikLembaga) {
                 DATA_SISTEM.karakteristikLembaga.forEach(item => {
                     let opt = document.createElement('option');
                     opt.value = item.id;
@@ -364,8 +339,8 @@
 
         function initCheckboxBerkasGuru() {
             const wrapper = document.getElementById('wrapperCheckboxGuru');
-            if (typeof DATA_SISTEM !== 'undefined' && DATA_SISTEM.berkasGuru && DATA_SISTEM.berkasGuru.length > 0) {
-                wrapper.innerHTML = "";
+            wrapper.innerHTML = "";
+            if (typeof DATA_SISTEM !== 'undefined' && DATA_SISTEM.berkasGuru) {
                 DATA_SISTEM.berkasGuru.forEach((berkas, index) => {
                     let label = document.createElement('label');
                     label.className = "flex items-center space-x-1.5 bg-white p-2 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition";
@@ -382,8 +357,8 @@
 
             if (valK === 'inklusi' || valK === 'slb') {
                 blokHambatan.classList.remove('hidden');
+                selectH.innerHTML = "";
                 if (typeof DATA_SISTEM !== 'undefined' && DATA_SISTEM.hambatanSLB) {
-                    selectH.innerHTML = "";
                     DATA_SISTEM.hambatanSLB.forEach(hambatan => {
                         let opt = document.createElement('option');
                         opt.value = hambatan.id;
@@ -393,6 +368,7 @@
                 }
             } else {
                 blokHambatan.classList.add('hidden');
+                selectH.innerHTML = "";
             }
         }
 
@@ -468,7 +444,7 @@
             }
 
             if(tipeAktif === 'Guru') {
-                if (typeof DATA_SISTEM !== 'undefined' && DATA_SISTEM.jenjangDanKelas && DATA_SISTEM.jenjangDanKelas[keySistem]) {
+                if (typeof DATA_SISTEM !== 'undefined' && DATA_SISTEM.jenjangDanKelas) {
                     const daftarMapel = DATA_SISTEM.jenjangDanKelas[keySistem].mapel;
                     daftarMapel.forEach(mapel => {
                         let opt = document.createElement('option');
@@ -476,11 +452,6 @@
                         opt.innerText = mapel;
                         selectD.appendChild(opt);
                     });
-                } else {
-                    let optFallback = document.createElement('option');
-                    optFallback.value = "Umum";
-                    optFallback.innerText = "Tematik / Semua Mata Pelajaran";
-                    selectD.appendChild(optFallback);
                 }
             } else {
                 if (typeof DATA_SISTEM !== 'undefined' && DATA_SISTEM.berkasSekolah) {
@@ -550,10 +521,10 @@
         });
 
         async function prosesGenerateAI() {
-            const nama = document.getElementById('inputNama').value;
+            const nama = document.getElementById('inputNama').value.trim();
             const jenjang = document.getElementById('selectJenjang').value;
             const mapel = document.getElementById('selectDinamis').value;
-            const materi = document.getElementById('inputMateriPokok').value;
+            const materi = document.getElementById('inputMateriPokok').value.trim();
             const jenisSekolah = document.getElementById('selectKarakteristik').value;
             const hambatan = document.getElementById('selectHambatan')?.value || "Tidak Ada";
 
@@ -561,6 +532,14 @@
                 alert("⚠️ Harap lengkapi Nama, Tingkat Kelas, dan Materi Pokok terlebih dahulu!");
                 return;
             }
+
+            const btnSubmit = document.getElementById('btnSubmitAI');
+            const btnText = document.getElementById('btnText');
+            
+            // Ubah UI ke status loading
+            btnSubmit.disabled = true;
+            btnSubmit.classList.add('opacity-75', 'cursor-not-allowed');
+            btnText.innerHTML = `⏳ Sedang Meracik Dokumen AI...`;
 
             const dataInputGuru = {
                 namaGuru: nama,
@@ -571,17 +550,27 @@
                 hambatanSiswa: hambatan
             };
 
-            if (typeof kirimPermintaanModulAI === 'function') {
-                alert("🚀 Mengirim data ke Server AI... Klik OK dan tunggu prosesnya.");
-                
-                const hasilDokumen = await kirimPermintaanModulAI(dataInputGuru);
+            try {
+                if (typeof kirimPermintaanModulAI === 'function') {
+                    const hasilDokumen = await kirimPermintaanModulAI(dataInputGuru);
 
-                if (hasilDokumen) {
-                    localStorage.setItem('pena_hasil_ai_temp', hasilDokumen);
-                    window.location.href = 'preview-cetak.html';
+                    if (hasilDokumen) {
+                        localStorage.setItem('pena_hasil_ai_temp', hasilDokumen);
+                        window.location.href = 'preview-cetak.html';
+                    } else {
+                        alert("❌ Gagal meracik dokumen. Silakan periksa koneksi internet Anda.");
+                    }
+                } else {
+                    alert("❌ Fungsi kirimPermintaanModulAI tidak ditemukan. Pastikan file ai-handler.js terhubung!");
                 }
-            } else {
-                alert("❌ Fungsi kirimPermintaanModulAI tidak ditemukan. Pastikan file ai-handler.js terhubung!");
+            } catch (err) {
+                console.error("Terjadi kesalahan:", err);
+                alert("❌ Terjadi kesalahan saat menghubungi server AI.");
+            } finally {
+                // Kembalikan status tombol
+                btnSubmit.disabled = false;
+                btnSubmit.classList.remove('opacity-75', 'cursor-not-allowed');
+                btnText.innerHTML = `✨ Jalankan Asisten Pemrosesan AI Gratisan`;
             }
         }
 
