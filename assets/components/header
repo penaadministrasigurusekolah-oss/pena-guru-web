@@ -1,0 +1,33 @@
+<!-- Header Navigation -->
+<header class="bg-white/90 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      
+      <!-- Logo & Brand -->
+      <div class="flex items-center space-x-3">
+        <a href="index.html" class="flex items-center gap-2 text-decoration-none">
+          <img src="assets/img/logo-pena.png" alt="Pena-Guru Logo" class="h-9 w-auto object-contain">
+          <span class="text-xl font-bold text-slate-800 tracking-tight">Pena-Guru</span>
+        </a>
+      </div>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
+        <a href="index.html" class="hover:text-emerald-600 transition-colors">Beranda</a>
+        <a href="about.html" class="hover:text-emerald-600 transition-colors">Tentang Kami</a>
+        <a href="contact.html" class="hover:text-emerald-600 transition-colors">Kontak</a>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="hidden md:flex items-center space-x-3">
+        <a href="payment.html" class="px-4 py-2 text-sm font-medium text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors">
+          Langganan Premium
+        </a>
+        <a href="dashboard.html" class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-sm transition-all">
+          Masuk Dashboard
+        </a>
+      </div>
+
+    </div>
+  </div>
+</header>
