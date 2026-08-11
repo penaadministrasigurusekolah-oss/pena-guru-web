@@ -1,0 +1,3 @@
+# Google AdSense Publisher ID Placeholder
+# Ganti pub-0000000000000000 dengan ID AdSense resmi Anda setelah diterima
+google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0

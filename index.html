@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pena Administrasi Guru - Solusi Berkas Kurikulum Nasional & Deep Learning</title>
+    <!-- Tailwind CSS untuk Desain Modern & Cepat -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Resmi -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Google Identity Services SDK Resmi -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col justify-between text-slate-800">
+
+    <!-- ========================================== -->
+    <!-- 1. NAVIGATION BAR                          -->
+    <!-- ========================================== -->
+    <nav class="bg-white border-b border-slate-200 px-6 py-4 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <img src="./assets/img/logo-pena.png" alt="Logo Pena" class="h-9 w-auto object-contain" onerror="this.src='https://placehold.co/150x50?text=Logo+Pena'">
+                <span class="font-bold text-slate-900 text-base md:text-lg tracking-tight">Pena Administrasi <span class="text-emerald-600">Guru</span></span>
+            </div>
+            <div class="flex items-center space-x-6 text-xs font-semibold text-slate-600">
+                <a href="#fitur" class="hover:text-emerald-600 transition">Fitur Perangkat</a>
+                <a href="#panduan" class="hover:text-emerald-600 transition">Panduan Aplikasi</a>
+                <button onclick="bukaGerbangAkses('Umum')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl transition shadow-sm">
+                    Masuk Sistem
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ADSENSE BANNER ATAS -->
+    <div class="w-full max-w-4xl mx-auto mt-4 px-4 hidden md:block">
+        <div class="bg-white border border-dashed border-slate-300 text-center py-3 text-xs text-slate-400 rounded-xl">
+            Ruang Iklan AdSense (Banner Atas)
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <header class="max-w-4xl mx-auto text-center pt-12 pb-6 px-4">
+        <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">
+            ⚡ Pendekatan Deep Learning: Mindful, Meaningful, Joyful
+        </span>
+        <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            Asisten Otomatisasi Administrasi <br><span class="text-emerald-600">Guru Kurikulum Nasional</span>
+        </h1>
+        <p class="text-sm md:text-base text-slate-500 mt-4 max-w-2xl mx-auto leading-relaxed">
+            Platform gratis untuk membantu guru kreatif di Indonesia menyusun modul harian, matriks kompetensi inti, dan rubrik penilaian otentik berbasis konsep belajar mendalam secara instan.
+        </p>
+    </header>
+
+    <!-- MAIN CONTENT - GRID MENU UTAMA -->
+    <main id="fitur" class="max-w-6xl w-full mx-auto px-6 py-6 flex-1">
+        
+        <div class="border-b border-slate-200 pb-3 mb-6">
+            <h2 class="font-bold text-slate-900 text-base uppercase tracking-wide">🛠️ Pilih Instrumen Administrasi</h2>
+            <p class="text-xs text-slate-400">Pilih salah satu instrumen di bawah ini untuk mulai memproses lembar draf dokumen mengajar Anda.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div onclick="bukaGerbangAkses('Modul Mengajar Harian AI')" class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm hover:shadow-md hover:border-emerald-500 transition cursor-pointer flex flex-col justify-between group">
+                <div>
+                    <div class="text-2xl mb-3">📄</div>
+                    <h3 class="font-bold text-slate-900 text-sm mb-1 group-hover:text-emerald-600 transition">Modul Mengajar Harian</h3>
+                    <p class="text-[11px] text-slate-400 leading-relaxed">Susun rencana pembelajaran harian berbasis elemen pemahaman mendalam dan pemicu nalar kritis siswa.</p>
+                </div>
+                <span class="text-xs text-emerald-600 font-bold mt-5 inline-block">&rarr; Buka Modul</span>
+            </div>
+
+            <div onclick="bukaGerbangAkses('Rubrik Asesmen')" class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm hover:shadow-md hover:border-emerald-500 transition cursor-pointer flex flex-col justify-between group">
+                <div>
+                    <div class="text-2xl mb-3">📊</div>
+                    <h3 class="font-bold text-slate-900 text-sm mb-1 group-hover:text-emerald-600 transition">Rubrik Asesmen Otentik</h3>
+                    <p class="text-[11px] text-slate-400 leading-relaxed">Buat lembar penilaian kompetensi inti terintegrasi (kognitif mendalam, afektif, dan psikomotorik).</p>
+                </div>
+                <span class="text-xs text-emerald-600 font-bold mt-5 inline-block">&rarr; Buka Modul</span>
+            </div>
+
+            <div onclick="bukaGerbangAkses('Jurnal Harian Guru')" class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm hover:shadow-md hover:border-emerald-500 transition cursor-pointer flex flex-col justify-between group">
+                <div>
+                    <div class="text-2xl mb-3">📝</div>
+                    <h3 class="font-bold text-slate-900 text-sm mb-1 group-hover:text-emerald-600 transition">Jurnal Harian & Refleksi</h3>
+                    <p class="text-[11px] text-slate-400 leading-relaxed">Catatan keterlaksanaan aktivitas kelas, pemetaan kendala siswa, serta evaluasi meta-kognitif.</p>
+                </div>
+                <span class="text-xs text-emerald-600 font-bold mt-5 inline-block">&rarr; Buka Modul</span>
+            </div>
+
+            <div onclick="bukaGerbangAkses('Pemetaan Konsep Inti')" class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm hover:shadow-md hover:border-emerald-500 transition cursor-pointer flex flex-col justify-between group">
+                <div>
+                    <div class="text-2xl mb-3">🧭</div>
+                    <h3 class="font-bold text-slate-900 text-sm mb-1 group-hover:text-emerald-600 transition">Pemetaan Konsep Inti</h3>
+                    <p class="text-[11px] text-slate-400 leading-relaxed">Rancang alur pemahaman materi pokok agar pembelajaran berfokus pada esensi bermakna, bukan hafalan.</p>
+                </div>
+                <span class="text-xs text-emerald-600 font-bold mt-5 inline-block">&rarr; Buka Modul</span>
+            </div>
+        </div>
+
+        <!-- PANDUAN TEKS -->
+        <section id="panduan" class="bg-white border border-slate-200 rounded-2xl p-6 my-8 max-w-4xl mx-auto">
+            <h2 class="font-bold text-slate-900 text-sm mb-4 uppercase tracking-wide">📋 Panduan Administrasi Pembelajaran Mendalam</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-slate-500 leading-relaxed">
+                <div>
+                    <h4 class="font-bold text-slate-800 mb-1.5">1. Fokus Konsep Bermakna</h4>
+                    <p>Sistem kami membantu memformulasikan draf administrasi yang berfokus pada materi esensial agar guru memiliki ruang fleksibel untuk berdiskusi interaktif di kelas.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-800 mb-1.5">2. Integrasi 3 Elemen Utama</h4>
+                    <p>Setiap dokumen draf yang dihasilkan otomatis memuat pemicu konflik kognitif (Mindful), investigasi konteks nyata (Meaningful), serta atmosfer belajar yang menyenangkan (Joyful).</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-800 mb-1.5">3. Output Siap Cetak A4</h4>
+                    <p>Setelah formulir dilengkapi di area dasbor, sistem akan merapikan tata letak tulisan ke dalam format kertas fisik standar operasional sekolah yang siap diunduh.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ADSENSE BANNER BAHAW -->
+    <div class="w-full max-w-4xl mx-auto mb-6 px-4">
+        <div class="bg-white border border-dashed border-slate-300 text-center py-4 text-xs text-slate-400 rounded-xl">
+            Ruang Iklan AdSense (Banner Bawah)
+        </div>
+    </div>
+
+    <!-- MODAL POP-UP GERBANG AKSES LOGIN -->
+    <div id="gerbangModal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-100 p-6 rounded-2xl max-w-sm w-full shadow-2xl relative text-center">
+            <button onclick="tutupGerbangAkses()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            <h3 class="text-base font-bold text-slate-900 mb-1" id="judulModalAlat">Akses Lembar Kerja</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-6">Silakan pilih metode masuk untuk mengaktifkan sesi pengisian formulir draf berkas administrasi.</p>
+            
+            <div class="space-y-4">
+                <!-- WIDGET INTEGRASI GOOGLE SIGN-IN RESMI -->
+                <div id="g_id_onload"
+                     data-client_id="548119831504-uehorrbknaop5bbhakmo5m4cskvjkrun.apps.googleusercontent.com"
+                     data-callback="handleGoogleLoginResponse"
+                     data-auto_select="false">
+                </div>
+                <div class="g_id_signin flex justify-center" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
+
+                <div class="relative flex py-1 items-center">
+                    <div class="flex-grow border-t border-slate-200"></div>
+                    <span class="flex-shrink mx-2 text-[10px] text-slate-400 uppercase font-semibold">Atau</span>
+                    <div class="flex-grow border-t border-slate-200"></div>
+                </div>
+
+                <!-- LOGIN SEBAGAI TAMU -->
+                <button onclick="eksekusiMetodeLogin('Tamu')" class="w-full bg-white hover:bg-slate-50 text-slate-700 font-medium py-2.5 px-4 rounded-xl text-xs border border-slate-200 flex flex-col items-center justify-center space-y-0.5 transition duration-150">
+                    <span>Masuk Sebagai Tamu Instan &rarr;</span>
+                    <span class="text-[9px] text-slate-400 font-normal">Mendapatkan Jatah Terbatas 1x Sesi Pembuatan Kerja</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- COOKIE CONSENT BANNER -->
+    <div id="consentBanner" class="hidden fixed bottom-4 left-4 right-4 md:left-auto md:max-w-md bg-slate-900 text-white p-5 rounded-2xl shadow-2xl z-50 border border-slate-800 animate-[fadeIn_0.3s_ease-out]">
+        <div class="text-xs leading-relaxed mb-3 text-slate-300">
+            🍪 <strong>Pemberitahuan Persetujuan Layanan:</strong> Kami menggunakan sistem penyimpanan lokal untuk mengingat kuota berkas Anda dan berencana menayangkan iklan Google AdSense untuk pemeliharaan sistem gratis.
+        </div>
+        <div class="flex justify-end">
+            <button onclick="terimaPersetujuanPrivasi()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-4 py-1.5 rounded-xl text-xs transition duration-150">
+                Saya Setuju & Lanjutkan
+            </button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 px-6 py-6 text-center">
+        <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-[11px] font-medium text-slate-400 mb-4">
+            <a href="about.html" class="hover:text-slate-600 transition">Tentang Kami</a>
+            <a href="privacy-policy.html" class="hover:text-slate-600 transition">Kebijakan Privasi</a>
+            <a href="terms-of-service.html" class="hover:text-slate-600 transition">Syarat & Ketentuan</a>
+            <a href="contact.html" class="hover:text-slate-600 transition">Kontak</a>
+        </div>
+        <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Hak Cipta &copy; Pena Administrasi Guru</p>
+    </footer>
+
+    <!-- LOGIKA JAVASCRIPT -->
+    <script>
+        window.onload = function() {
+            if (!localStorage.getItem('thc_user_consent')) {
+                document.getElementById('consentBanner').classList.remove('hidden');
+            }
+        };
+
+        function terimaPersetujuanPrivasi() {
+            localStorage.setItem('thc_user_consent', 'approved');
+            document.getElementById('consentBanner').classList.add('hidden');
+        }
+
+        function bukaGerbangAkses(namaAlat) {
+            document.getElementById('judulModalAlat').innerText = namaAlat !== 'Umum' ? "Akses " + namaAlat : "Akses Lembar Kerja";
+            document.getElementById('gerbangModal').classList.remove('hidden');
+        }
+        
+        function tutupGerbangAkses() {
+            document.getElementById('gerbangModal').classList.add('hidden');
+        }
+
+        // CALLBACK OTENTIKASI GOOGLE SIGN-IN RESMI
+        function handleGoogleLoginResponse(response) {
+            try {
+                // Decode JWT Token dari Google
+                const base64Url = response.credential.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+                const profile = JSON.parse(jsonPayload);
+
+                // Simpan identitas resmi Google Pengguna
+                localStorage.setItem('pena_user_email', profile.email);
+                localStorage.setItem('pena_user_name', profile.name);
+                localStorage.setItem('thc_login_method', 'Google (' + profile.email + ')');
+                localStorage.setItem('thc_kuota_gratis', 5);
+
+                alert(`✨ Selamat Datang, ${profile.name}!\nLogin Google berhasil.`);
+                window.location.href = 'dashboard.html';
+            } catch (err) {
+                console.error("Gagal memproses data Google Login:", err);
+                alert("Gagal melakukan login Google. Silakan coba lagi.");
+            }
+        }
+
+        function eksekusiMetodeLogin(metode) {
+            localStorage.setItem('thc_login_method', metode);
+            localStorage.setItem('thc_kuota_gratis', 1);
+            window.location.href = 'dashboard.html';
+        }
+
+        window.addEventListener('click', function(event) {
+            var modal = document.getElementById('gerbangModal');
+            if (event.target === modal) { modal.classList.add('hidden'); }
+        });
+    </script>
+</body>
+</html>

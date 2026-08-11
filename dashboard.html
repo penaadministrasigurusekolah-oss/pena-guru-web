@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Kerja - Pena Administrasi Guru</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .animate-fade-in {
+            animation: fadeIn 0.2s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-800 flex flex-col justify-between">
+
+    <header class="bg-white border-b border-slate-200 px-6 py-4 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <img src="./assets/img/logo-pena.png" alt="Logo Pena" class="h-8 w-auto object-contain" onerror="this.src='https://placehold.co/150x50?text=Logo+Pena'">
+                <span class="font-bold text-slate-900 text-base tracking-tight">Pena Administrasi <span class="text-emerald-600">Guru</span></span>
+            </div>
+            
+            <div class="flex items-center space-x-4 bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl text-xs">
+                <div>Status Sesi: <span id="infoMetode" class="font-bold text-slate-900">-</span></div>
+                <div class="h-4 w-px bg-slate-200"></div>
+                <div>Sisa Kuota Hari Ini: <span id="infoKuota" class="font-bold text-emerald-600">-</span></div>
+                <button onclick="window.location.href='index.html'" class="text-slate-400 hover:text-rose-600 transition font-medium ml-2">&larr; Keluar</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="w-full max-w-7xl mx-auto mt-4 px-6 hidden md:block">
+        <div class="bg-white border border-dashed border-slate-300 text-center py-2.5 text-xs text-slate-400 rounded-xl">
+            Slot Iklan AdSense (Dashboard Top Banner)
+        </div>
+    </div>
+
+    <main class="max-w-7xl w-full mx-auto px-6 py-6 flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <div class="lg:col-span-2 space-y-6">
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                
+                <div class="mb-6">
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Pilih Kategori Instrumen Berkas</label>
+                    <div class="grid grid-cols-2 gap-3 bg-slate-100 p-1 rounded-xl">
+                        <button type="button" id="btnTipeGuru" onclick="setTipeBerkas('Guru')" class="py-2.5 text-xs font-bold rounded-lg transition duration-150 bg-white text-slate-900 shadow-sm">
+                            👤 Perangkat Ajar Guru (Personal)
+                        </button>
+                        <button type="button" id="btnTipeLembaga" onclick="setTipeBerkas('Lembaga')" class="py-2.5 text-xs font-bold rounded-lg transition duration-150 text-slate-500 hover:text-slate-800">
+                            🏢 Berkas Manajemen Lembaga (Sekolah)
+                        </button>
+                    </div>
+                </div>
+
+                <form id="formDasbor" onsubmit="event.preventDefault();" class="space-y-6">
+                    
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-4">
+                        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wide flex items-center gap-1.5">
+                            📌 <span>Identitas Administrasi Umum</span>
+                        </h3>
+                        
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-500 mb-1">Karakteristik Satuan Pendidikan</label>
+                            <select id="selectKarakteristik" onchange="handleKarakteristikLembaga()" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                            </select>
+                        </div>
+
+                        <div id="blokHambatanSLB" class="hidden space-y-1 animate-fade-in">
+                            <label class="block text-[11px] font-semibold text-amber-600 mb-1">Kategori Hambatan Dominan Peserta Didik</label>
+                            <select id="selectHambatan" class="w-full bg-white border border-amber-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-amber-500 bg-amber-50/10">
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label id="lblNama" class="block text-[11px] font-semibold text-slate-500 mb-1">Nama Lengkap Guru Pengajar</label>
+                                <input type="text" id="inputNama" placeholder="Contoh: Marina, S.Pd." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-500 mb-1">NPSN Resmi Sekolah</label>
+                                <input type="text" id="inputNPSN" placeholder="Contoh: 20101234" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-500 mb-1">Pilih Tingkatan Jenjang & Fase Kelas</label>
+                                <select id="selectJenjang" onchange="updateOpsiTurunan()" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                                    <option value="">-- Pilih Tingkat Kelas --</option>
+                                    <optgroup label="TK / PAUD (Fase Fondasi)">
+                                        <option value="TK-A">Fase Fondasi - TK Kelompok A (Usia 4-5 Tahun)</option>
+                                        <option value="TK-B">Fase Fondasi - TK Kelompok B (Usia 5-6 Tahun)</option>
+                                    </optgroup>
+                                    <optgroup label="Sekolah Dasar (SD) / SDLB">
+                                        <option value="SD-1">Fase A - Kelas 1 SD</option>
+                                        <option value="SD-2">Fase A - Kelas 2 SD</option>
+                                        <option value="SD-3">Fase B - Kelas 3 SD</option>
+                                        <option value="SD-4">Fase B - Kelas 4 SD</option>
+                                        <option value="SD-5">Fase C - Kelas 5 SD (Ada Koding & AI)</option>
+                                        <option value="SD-6">Fase C - Kelas 6 SD</option>
+                                    </optgroup>
+                                    <optgroup label="Sekolah Menengah Pertama (SMP) / SMPLB">
+                                        <option value="SMP-7">Fase D - Kelas 7 SMP (Ada Koding & AI)</option>
+                                        <option value="SMP-8">Fase D - Kelas 8 SMP</option>
+                                        <option value="SMP-9">Fase D - Kelas 9 SMP</option>
+                                    </optgroup>
+                                    <optgroup label="SMA / SMALB / SMK">
+                                        <option value="SMA-10">Fase E - Kelas 10 SMA/SMK (Ada Koding & AI)</option>
+                                        <option value="SMA-11">Fase F - Kelas 11 SMA/SMK</option>
+                                        <option value="SMA-12">Fase F - Kelas 12 SMA/SMK</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div>
+                                <label id="lblDinamis" class="block text-[11px] font-semibold text-slate-500 mb-1">Mata Pelajaran (Mapel)</label>
+                                <select id="selectDinamis" onchange="checkOpsiOther()" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                                    <option value="">-- Pilih Tingkat Terlebih Dahulu --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="blokMapelOther" class="hidden space-y-1 animate-fade-in">
+                            <label id="lblMapelOther" class="block text-[11px] font-semibold text-rose-600 mb-1">Ketik Nama Mata Pelajaran Kustom / Muatan Lokal Daerah</label>
+                            <input type="text" id="inputMapelOther" placeholder="Contoh input..." class="w-full bg-white border border-rose-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-rose-500">
+                        </div>
+
+                        <div id="blokCakupanMateriGuru" class="space-y-4 pt-2">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="md:col-span-1">
+                                    <label class="block text-[11px] font-semibold text-slate-500 mb-1">Rentang Waktu Modul</label>
+                                    <select id="selectRentangWaktu" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                                        <option value="Pertemuan">Per Pertemuan (1-2 Tatap Muka)</option>
+                                        <option value="MateriUtuh">Satu Materi Pokok Utuh (Bab)</option>
+                                        <option value="Semester">Satu Semester Penuh</option>
+                                        <option value="Tahun">Satu Tahun Ajaran Global</option>
+                                    </select>
+                                </div>
+                                <div class="md:col-span-1">
+                                    <label class="block text-[11px] font-semibold text-slate-500 mb-1">Materi Pokok / Bab Utama</label>
+                                    <input type="text" id="inputMateriPokok" placeholder="Contoh: Organ Pencernaan Manusia" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                                </div>
+                                <div class="md:col-span-1">
+                                    <label class="block text-[11px] font-semibold text-slate-500 mb-1">Sub-Materi / Topik Spesifik (Opsional)</label>
+                                    <input type="text" id="inputSubMateri" placeholder="Contoh: Enzim Amilase di Lambung" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-500 mb-2">Jenis Berkas Perangkat Guru yang Ingin Dihasilkan AI</label>
+                                <div id="wrapperCheckboxGuru" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 text-[11px]">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="blokLegalitasLembaga" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 pt-2 animate-fade-in">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-500 mb-1">Tahun Ajaran</label>
+                                <select id="selectTahunAjaran" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-blue-500">
+                                    <option value="2026/2027">2026/2027</option>
+                                    <option value="2027/2028">2027/2028</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-500 mb-1">Semester Berlaku Berkas</label>
+                                <select id="selectSemester" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-blue-500">
+                                    <option value="Ganjil">Semester Ganjil</option>
+                                    <option value="Genap">Semester Genap</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-500 mb-1">Target Sasaran Mutu / Batas Pelaksanaan</label>
+                                <input type="text" id="inputTargetLembaga" placeholder="Misal: Diimplementasikan Triwulan I" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-blue-500">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="blokRaporPendidikan" class="bg-white border border-slate-200 p-4 rounded-xl space-y-4">
+                        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wide flex items-center gap-1.5">
+                            📊 <span>Sinkronisasi Target Rapor Mutu Satuan Pendidikan</span>
+                        </h3>
+                        
+                        <div class="p-3 bg-emerald-50 border border-emerald-100 rounded-xl text-xs space-y-2">
+                            <p class="text-slate-600 leading-relaxed">
+                                <strong>Sistem Integrasi NPSN:</strong> Masukkan 8 digit NPSN di atas untuk menarik target prioritas pembenahan mutu sekolah Anda secara otomatis. Jika belum terdaftar, Anda bebas memilih fokus indikator secara manual di bawah.
+                            </p>
+                            <div class="flex items-center space-x-2 text-[11px] font-semibold text-emerald-800">
+                                <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span id="statusNPSN">Siap mendeteksi atau menerima input pilihan mandiri</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-500 mb-1">Fokus Indikator Rapor Pendidikan yang Ingin Dibenahi / Diintervensi</label>
+                            <select id="selectFokusRapor" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                                <option value="Umum">Umum (Pengembangan Standar Kurikulum Reguler)</option>
+                                <option value="Literasi">Kemampuan Literasi (Penguatan Analisis Teks Mendalam)</option>
+                                <option value="Numerasi">Kemampuan Numerasi (Penguatan Penalaran Matematis Kontekstual)</option>
+                                <option value="Karakter">Indeks Karakter (Optimalisasi Konstruksi Profil Lulusan)</option>
+                                <option value="Pedagogis">Kualitas Pembelajaran (Pembenahan Praktik Pedagogis Guru Terarah)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 p-4 rounded-xl space-y-4">
+                        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wide flex items-center gap-1.5">
+                            🧭 <span>Komponen Utama Pembelajaran Mendalam (Deep Learning)</span>
+                        </h3>
+
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-500 mb-2">Dimensi Target Profil Lulusan (Boleh Pilih Lebih dari Satu)</label>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
+                                <label class="flex items-center space-x-2 bg-slate-50 p-2 rounded-lg cursor-pointer hover:bg-slate-100 transition"><input type="checkbox" name="profil" value="Imtaq" class="accent-emerald-600"> <span>Imtaq & Akhlak</span></label>
+                                <label class="flex items-center space-x-2 bg-slate-50 p-2 rounded-lg cursor-pointer hover:bg-slate-100 transition"><input type="checkbox" name="profil" value="Kewargaan" class="accent-emerald-600"> <span>Kewargaan</span></label>
+                                <label class="flex items-center space-x-2 bg-slate-50 p-2 rounded-lg cursor-pointer hover:bg-slate-100 transition"><input type="checkbox" name="profil" value="Kreativitas" class="accent-emerald-600"> <span>Kreativitas</span></label>
+                                <label class="flex items-center space-x-2 bg-slate-50 p-2 rounded-lg cursor-pointer hover:bg-slate-100 transition"><input type="checkbox" name="profil" value="Nalar Kritis" class="accent-emerald-600"> <span>Nalar Kritis</span></label>
+                                <label class="flex items-center space-x-2 bg-slate-50 p-2 rounded-lg cursor-pointer hover:bg-slate-100 transition"><input type="checkbox" name="profil" value="Kolaborasi" class="accent-emerald-600"> <span>Kolaborasi</span></label>
+                                <label class="flex items-center space-x-2 bg-slate-50 p-2 rounded-lg cursor-pointer hover:bg-slate-100 transition"><input type="checkbox" name="profil" value="Kandirian" class="accent-emerald-600"> <span>Kemandirian</span></label>
+                                <label class="flex items-center space-x-2 bg-slate-50 p-2 rounded-lg cursor-pointer hover:bg-slate-100 transition"><input type="checkbox" name="profil" value="Kesehatan" class="accent-emerald-600"> <span>Kesehatan</span></label>
+                                <label class="flex items-center space-x-2 bg-slate-50 p-2 rounded-lg cursor-pointer hover:bg-slate-100 transition"><input type="checkbox" name="profil" value="Komunikasi" class="accent-emerald-600"> <span>Komunikasi</span></label>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-500 mb-1.5">Karakteristik Prinsip Pembelajaran (Bisa Kombinasi / Terfokus)</label>
+                                <div class="grid grid-cols-1 gap-1 text-[11px]">
+                                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" name="prinsip" value="Mindful" checked class="accent-emerald-600"> <span>Berkesadaran (Mindful) — Fokus Nalar & Refleksi</span></label>
+                                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" name="prinsip" value="Meaningful" checked class="accent-emerald-600"> <span>Bermakna (Meaningful) — Fokus Konteks Riil</span></label>
+                                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" name="prinsip" value="Joyful" class="accent-emerald-600"> <span>Menggembirakan (Joyful) — Atmosfer Interaktif</span></label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-500 mb-1.5">Kerangka Ekosistem Pembelajaran Pendukung</label>
+                                <div class="grid grid-cols-2 gap-1 text-[11px]">
+                                    <label class="flex items-center space-x-1.5"><input type="checkbox" name="kerangka" value="Pedagogis" checked class="accent-emerald-600"> <span>Praktik Pedagogis</span></label>
+                                    <label class="flex items-center space-x-1.5"><input type="checkbox" name="kerangka" value="Kemitraan" class="accent-emerald-600"> <span>Kemitraan Belajar</span></label>
+                                    <label class="flex items-center space-x-1.5"><input type="checkbox" name="kerangka" value="Lingkungan" class="accent-emerald-600"> <span>Lingkungan Fisik</span></label>
+                                    <label class="flex items-center space-x-1.5"><input type="checkbox" name="kerangka" value="Digital" class="accent-emerald-600"> <span>Pemanfaatan Digital</span></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 p-4 rounded-xl space-y-4">
+                        <h3 id="lblJudulEssay" class="text-xs font-bold text-slate-900 uppercase tracking-wide">📄 Skenario Alur Pengalaman Belajar Siswa</h3>
+                        
+                        <div class="space-y-3">
+                            <div>
+                                <label id="lblEssay1" class="block text-[11px] font-semibold text-slate-500 mb-1">1. Tahap Memahami (Bagaimana memicu konflik kognitif/perhatian awal siswa?)</label>
+                                <textarea id="textEssay1" rows="2" placeholder="Contoh: Siswa diminta mengamati dan meraba tekstur permukaan benda-benda alam di sekitar halaman..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500"></textarea>
+                            </div>
+                            <div>
+                                <label id="lblEssay2" class="block text-[11px] font-semibold text-slate-500 mb-1">2. Tahap Mengaplikasi (Tantangan kontekstual atau investigasi kelompok nyata?)</label>
+                                <textarea id="textEssay2" rows="2" placeholder="Contoh: Secara berkelompok, siswa mengklasifikasikan benda kasar/halus lalu membuat laporan draf tabel mini..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500"></textarea>
+                            </div>
+                            <div>
+                                <label id="lblEssay3" class="block text-[11px] font-semibold text-slate-500 mb-1">3. Tahap Merefleksi (Bagaimana siswa mengevaluasi pemahaman meta-kognitif mereka?)</label>
+                                <textarea id="textEssay3" rows="2" placeholder="Contoh: Siswa menceritakan bagian yang paling menantang dan menulis komitmen belajar di papan tulis..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-3 pt-2">
+                        <button type="button" onclick="prosesGenerateAI()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-sm">
+                            ✨ Jalankan Asisten Pemrosesan AI Gratisan
+                        </button>
+                        <button type="button" onclick="resetFormulir()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold py-3 px-4 rounded-xl text-xs transition">
+                            Reset Form
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <div class="space-y-6">
+            <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-5 rounded-2xl shadow-sm">
+                <h3 class="font-bold text-xs uppercase tracking-wider text-emerald-400 mb-2">💡 Tips Lolos Telaah Pengawas</h3>
+                <p class="text-[11px] text-slate-300 leading-relaxed mb-3">
+                    Gunakan fitur <strong>Sub-Materi</strong> jika Anda ingin membuat kelengkapan draf harian spesifik untuk pertemuan esok hari. Sistem AI secara otomatis mengunci aktivitas agar tepat sasaran dan durasi.
+                </p>
+                <div class="text-[10px] text-slate-400 border-t border-slate-700 pt-2">
+                    Mendukung Integrasi Rapor Mutu Pendidikan Nasional.
+                </div>
+            </div>
+
+            <div class="bg-white border border-dashed border-slate-300 text-center py-20 text-xs text-slate-400 rounded-2xl">
+                Ruang Iklan AdSense <br>(Sidebar Display Banner)
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 px-6 py-4 text-center text-[11px] text-slate-400 mt-6">
+        <p>Hak Cipta &copy; Pena Administrasi Guru - Dashboard Panel Utama</p>
+    </footer>
+
+    <!-- LINK DATA KONTROLER PUSAT DANA 0 RUPIAH -->
+    <script src="js/config/data-sistem.js"></script>
+    <!-- LINK KEAMANAN & PENGIRIM AI -->
+    <script src="js/core/ai-handler.js"></script>
+    <!-- LINK LAYANAN PAYMENT & QRIS -->
+    <script src="js/services/payment-handler.js"></script>
+
+    <script>
+        let tipeAktif = "Guru";
+
+        window.onload = function() {
+            let metode = localStorage.getItem('thc_login_method') || 'Tamu';
+            let kuota = localStorage.getItem('thc_kuota_gratis') || '1';
+            document.getElementById('infoMetode').innerText = metode;
+            document.getElementById('infoKuota').innerText = kuota + " Sesi Kerja";
+            
+            initKarakteristikLembaga();
+            initCheckboxBerkasGuru();
+            updateOpsiTurunan();
+        };
+
+        function initKarakteristikLembaga() {
+            const selectK = document.getElementById('selectKarakteristik');
+            selectK.innerHTML = "";
+            if (typeof DATA_SISTEM !== 'undefined' && DATA_SISTEM.karakteristikLembaga) {
+                DATA_SISTEM.karakteristikLembaga.forEach(item => {
+                    let opt = document.createElement('option');
+                    opt.value = item.id;
+                    opt.innerText = item.nama;
+                    selectK.appendChild(opt);
+                });
+            }
+        }
+
+        function initCheckboxBerkasGuru() {
+            const wrapper = document.getElementById('wrapperCheckboxGuru');
+            wrapper.innerHTML = "";
+            if (typeof DATA_SISTEM !== 'undefined' && DATA_SISTEM.berkasGuru) {
+                DATA_SISTEM.berkasGuru.forEach((berkas, index) => {
+                    let label = document.createElement('label');
+                    label.className = "flex items-center space-x-1.5 bg-white p-2 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition";
+                    label.innerHTML = `<input type="checkbox" name="outGuru" value="${berkas.id}" ${index === 0 ? 'checked' : ''} class="accent-emerald-600"> <span class="truncate">${berkas.nama.split(' ')[0]} ${berkas.nama.split(' ')[1] || ''}</span>`;
+                    wrapper.appendChild(label);
+                });
+            }
+        }
+
+        function handleKarakteristikLembaga() {
+            const valK = document.getElementById('selectKarakteristik').value;
+            const blokHambatan = document.getElementById('blokHambatanSLB');
+            const selectH = document.getElementById('selectHambatan');
+
+            if (valK === 'inklusi' || valK === 'slb') {
+                blokHambatan.classList.remove('hidden');
+                selectH.innerHTML = "";
+                if (typeof DATA_SISTEM !== 'undefined' && DATA_SISTEM.hambatanSLB) {
+                    DATA_SISTEM.hambatanSLB.forEach(hambatan => {
+                        let opt = document.createElement('option');
+                        opt.value = hambatan.id;
+                        opt.innerText = hambatan.nama;
+                        selectH.appendChild(opt);
+                    });
+                }
+            } else {
+                blokHambatan.classList.add('hidden');
+                selectH.innerHTML = "";
+            }
+        }
+
+        function setTipeBerkas(tipe) {
+            tipeAktif = tipe;
+            const btnG = document.getElementById('btnTipeGuru');
+            const btnL = document.getElementById('btnTipeLembaga');
+            
+            const blokGuru = document.getElementById('blokCakupanMateriGuru');
+            const blokLembaga = document.getElementById('blokLegalitasLembaga');
+            const inputOther = document.getElementById('inputMapelOther');
+
+            inputOther.value = "";
+            document.getElementById('blokMapelOther').classList.add('hidden');
+
+            if(tipe === 'Guru') {
+                btnG.className = "py-2.5 text-xs font-bold rounded-lg transition duration-150 bg-white text-slate-900 shadow-sm";
+                btnL.className = "py-2.5 text-xs font-bold rounded-lg transition duration-150 text-slate-500 hover:text-slate-800";
+                
+                blokGuru.classList.remove('hidden');
+                blokLembaga.classList.add('hidden');
+
+                document.getElementById('selectTahunAjaran').selectedIndex = 0;
+                document.getElementById('selectSemester').selectedIndex = 0;
+                document.getElementById('inputTargetLembaga').value = "";
+                
+                document.getElementById('lblNama').innerText = "Nama Lengkap Guru Pengajar";
+                document.getElementById('lblDinamis').innerText = "Mata Pelajaran (Mapel)";
+                document.getElementById('lblJudulEssay').innerText = "📄 Skenario Alur Pengalaman Belajar Siswa";
+                document.getElementById('lblEssay1').innerText = "1. Tahap Memahami (Bagaimana memicu konflik kognitif/perhatian awal siswa?)";
+                document.getElementById('lblEssay2').innerText = "2. Tahap Mengaplikasi (Tantangan kontekstual atau investigasi kelompok nyata?)";
+                document.getElementById('lblEssay3').innerText = "3. Tahap Merefleksi (Bagaimana siswa mengevaluasi pemahaman meta-kognitif mereka?)";
+            } else {
+                btnL.className = "py-2.5 text-xs font-bold rounded-lg transition duration-150 bg-white text-slate-900 shadow-sm";
+                btnG.className = "py-2.5 text-xs font-bold rounded-lg transition duration-150 text-slate-500 hover:text-slate-800";
+                
+                blokLembaga.classList.remove('hidden');
+                blokGuru.classList.add('hidden');
+
+                document.getElementById('inputMateriPokok').value = "";
+                document.getElementById('inputSubMateri').value = "";
+                document.getElementById('selectRentangWaktu').selectedIndex = 0;
+                
+                document.getElementById('lblNama').innerText = "Nama Kepala Sekolah / Ketua Tim Kurikulum";
+                document.getElementById('lblDinamis').innerText = "Pilih Jenis Dokumen Lembaga";
+                document.getElementById('lblJudulEssay').innerText = "🏢 Catatan Analisis & Dasar Strategi Satuan Pendidikan";
+                document.getElementById('lblEssay1').innerText = "1. Analisis Karakteristik Lingkungan Sekolah (Potensi riil sosiokultural daerah Anda)";
+                document.getElementById('lblEssay2').innerText = "2. Skenario Pengorganisasian Pembelajaran (Beban intrakurikuler dan penugasan guru)";
+                document.getElementById('lblEssay3').innerText = "3. Rencana Evaluasi & Pendampingan Mutu (Mekanisme refleksi berkala sekolah)";
+            }
+            updateOpsiTurunan();
+        }
+
+        function updateOpsiTurunan() {
+            const jenjangVal = document.getElementById('selectJenjang').value;
+            const selectD = document.getElementById('selectDinamis');
+            selectD.innerHTML = ""; 
+
+            if(!jenjangVal) {
+                let opt = document.createElement('option');
+                opt.value = "";
+                opt.innerText = "-- Pilih Tingkat Kelas Terlebih Dahulu --";
+                selectD.appendChild(opt);
+                checkOpsiOther();
+                return;
+            }
+
+            let keySistem = "sd"; 
+            if(jenjangVal.startsWith("TK")) keySistem = "paud";
+            if(jenjangVal.startsWith("SMP")) keySistem = "smp";
+            if(jenjangVal.startsWith("SMA")) {
+                keySistem = (document.getElementById('inputNPSN').value.startsWith("30") || jenjangVal.includes("SMK")) ? "smk" : "sma";
+            }
+
+            if(tipeAktif === 'Guru') {
+                if (typeof DATA_SISTEM !== 'undefined' && DATA_SISTEM.jenjangDanKelas) {
+                    const daftarMapel = DATA_SISTEM.jenjangDanKelas[keySistem].mapel;
+                    daftarMapel.forEach(mapel => {
+                        let opt = document.createElement('option');
+                        opt.value = mapel;
+                        opt.innerText = mapel;
+                        selectD.appendChild(opt);
+                    });
+                }
+            } else {
+                if (typeof DATA_SISTEM !== 'undefined' && DATA_SISTEM.berkasSekolah) {
+                    DATA_SISTEM.berkasSekolah.forEach(berkas => {
+                        let opt = document.createElement('option');
+                        opt.value = berkas.id;
+                        opt.innerText = berkas.nama;
+                        selectD.appendChild(opt);
+                    });
+                }
+                
+                let optManual = document.createElement('option');
+                optManual.value = "Lainnya (Input Manual)";
+                optManual.innerText = "📁 Berkas Kustom Lainnya (Input Manual)";
+                selectD.appendChild(optManual);
+            }
+
+            checkOpsiOther();
+        }
+
+        function checkOpsiOther() {
+            const selectVal = document.getElementById('selectDinamis').value;
+            const blokOther = document.getElementById('blokMapelOther');
+            const lblOther = document.getElementById('lblMapelOther');
+            const inputOther = document.getElementById('inputMapelOther');
+            
+            if(selectVal.includes("Lainnya") || selectVal.includes("Manual")) {
+                blokOther.classList.remove('hidden');
+                
+                if(tipeAktif === 'Guru') {
+                    lblOther.innerText = "Ketik Nama Mata Pelajaran Kustom / Muatan Lokal Daerah (Mulok)";
+                    lblOther.className = "block text-[11px] font-semibold text-rose-600 mb-1";
+                    inputOther.placeholder = "Contoh: Bahasa Lampung, Seni Membatik, Keterampilan Daerah";
+                } else {
+                    lblOther.innerText = "Ketik Nama Instrumen / Dokumen Kustom Kelayakan Lembaga";
+                    lblOther.className = "block text-[11px] font-semibold text-blue-600 mb-1";
+                    inputOther.placeholder = "Contoh: RKJM Sekolah, Dokumen Budaya Mutu, Panduan Tata Tertib Asrama";
+                }
+            } else {
+                blokOther.classList.add('hidden');
+                inputOther.value = "";
+            }
+        }
+
+        document.getElementById('inputNPSN').addEventListener('input', function(e) {
+            const val = e.target.value.trim();
+            const statusNPSN = document.getElementById('statusNPSN');
+            const selectRapor = document.getElementById('selectFokusRapor');
+
+            if(val.length >= 7) {
+                statusNPSN.className = "text-emerald-600 font-bold animate-pulse";
+                if(val.endsWith("1") || val.endsWith("3")) {
+                    selectRapor.value = "Literasi";
+                    statusNPSN.innerText = "✓ Tersinkronisasi otomatis via NPSN: Fokus Perbaikan Literasi.";
+                } else if(val.endsWith("2") || val.endsWith("4")) {
+                    selectRapor.value = "Numerasi";
+                    statusNPSN.innerText = "✓ Tersinkronisasi otomatis via NPSN: Fokus Perbaikan Numerasi.";
+                } else {
+                    selectRapor.value = "Karakter";
+                    statusNPSN.innerText = "✓ Tersinkronisasi otomatis via NPSN: Fokus Indeks Karakter Lulusan.";
+                }
+                updateOpsiTurunan();
+            } else {
+                statusNPSN.innerText = "Siap mendeteksi atau menerima input pilihan mandiri";
+                statusNPSN.className = "text-emerald-800 font-semibold";
+            }
+        });
+
+        async function prosesGenerateAI() {
+            const nama = document.getElementById('inputNama').value;
+            const jenjang = document.getElementById('selectJenjang').value;
+            const mapel = document.getElementById('selectDinamis').value;
+            const materi = document.getElementById('inputMateriPokok').value;
+            const jenisSekolah = document.getElementById('selectKarakteristik').value;
+            const hambatan = document.getElementById('selectHambatan')?.value || "Tidak Ada";
+
+            if (!nama || !jenjang || !materi) {
+                alert("⚠️ Harap lengkapi Nama, Tingkat Kelas, dan Materi Pokok terlebih dahulu!");
+                return;
+            }
+
+            const dataInputGuru = {
+                namaGuru: nama,
+                mapel: mapel || "-",
+                jenjang: jenjang || "-",
+                materiPokok: materi,
+                jenisSekolah: jenisSekolah,
+                hambatanSiswa: hambatan
+            };
+
+            if (typeof kirimPermintaanModulAI === 'function') {
+                alert("🚀 Mengirim data ke Server AI... Klik OK dan tunggu prosesnya.");
+                
+                const hasilDokumen = await kirimPermintaanModulAI(dataInputGuru);
+
+                if (hasilDokumen) {
+                    localStorage.setItem('pena_hasil_ai_temp', hasilDokumen);
+                    window.location.href = 'preview-cetak.html';
+                }
+            } else {
+                alert("❌ Fungsi kirimPermintaanModulAI tidak ditemukan. Pastikan file ai-handler.js terhubung!");
+            }
+        }
+
+        function resetFormulir() {
+            document.getElementById('formDasbor').reset();
+            document.getElementById('statusNPSN').innerText = "Siap mendeteksi atau menerima input pilihan mandiri";
+            document.getElementById('blokHambatanSLB').classList.add('hidden');
+            updateOpsiTurunan();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /test-dashboard.html
+Disallow: /test-payment.html
+
+Sitemap: https://pena-guru.com/sitemap.xml

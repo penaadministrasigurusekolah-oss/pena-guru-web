@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepLearning AI - Perancangan Berkas Kurikulum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .a4-page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            background: white;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        .locked-document {
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            pointer-events: none !important;
+            opacity: 0.85;
+        }
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 15mm;
+            }
+            body { background: white !important; }
+            .no-print, #loadingOverlay, #donasiModal { 
+                display: none !important; 
+            }
+            .a4-page { 
+                box-shadow: none !important; 
+                padding: 0 !important; 
+                width: 100% !important; 
+                border: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col lg:flex-row">
+
+    <!-- PANEL KONTROL KIRI -->
+    <div class="no-print w-full lg:w-80 bg-slate-900 text-white p-6 flex flex-col justify-between shrink-0 shadow-xl z-10">
+        <div>
+            <div class="flex items-center space-x-2 mb-8">
+                <span class="text-2xl">🧠</span>
+                <h1 class="text-xl font-bold tracking-tight">DeepLearning <span class="text-emerald-400">AI</span></h1>
+            </div>
+            
+            <p class="text-xs text-slate-400 mb-3 uppercase tracking-wider font-semibold">Status Dokumen</p>
+            <div class="bg-slate-800 p-4 rounded-lg border border-slate-700 mb-6 text-sm">
+                <div class="flex justify-between mb-2">
+                    <span class="text-slate-400">Status:</span>
+                    <span class="font-medium text-emerald-400">Siap Ditinjau</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Format:</span>
+                    <span class="font-medium text-amber-400">A4 Standar</span>
+                </div>
+            </div>
+
+            <div id="infoAkses" class="bg-amber-500/10 border border-amber-500/30 text-amber-300 p-4 rounded-xl text-xs leading-relaxed mb-6">
+                🔒 <strong>Dokumen Terkunci:</strong> Klik tombol cetak di bawah untuk membuka fitur pengeditan dan pencetakan.
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <button onclick="bukaModalDonasi()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 px-4 rounded-lg font-medium transition duration-200 flex items-center justify-center space-x-2 shadow-lg shadow-emerald-500/20">
+                <span>🖨️</span>
+                <span>Buka Kunci & Cetak PDF</span>
+            </button>
+            
+            <button id="btnSalin" onclick="salinSemuaTeks()" disabled class="w-full bg-slate-800 text-slate-500 py-3 px-4 rounded-lg font-medium cursor-not-allowed border border-slate-700 flex items-center justify-center space-x-2">
+                <span>📋</span>
+                <span>Salin Semua Teks</span>
+            </button>
+
+            <a href="dashboard.html" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 px-4 rounded-lg text-xs font-medium transition duration-200 flex items-center justify-center space-x-2 border border-slate-700 text-decoration-none">
+                <span>&larr;</span>
+                <span>Kembali ke Dashboard</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- PANEL PREVIEW DOKUMEN (LEMBAR KERTAS A4) -->
+    <div class="flex-1 p-4 lg:p-12 flex justify-center items-start overflow-x-auto" oncontextmenu="return false;">
+        <div id="dokumenCetak" class="a4-page rounded-sm text-gray-800 outline-none locked-document" contenteditable="false">
+            <p class="text-slate-400 italic text-center py-20">Memuat hasil dokumen dari AI...</p>
+        </div>
+    </div>
+
+    <!-- OVERLAY LOADING -->
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex flex-col items-center justify-center text-white">
+        <div class="bg-slate-900 p-8 rounded-2xl border border-slate-800 flex flex-col items-center max-w-sm text-center shadow-2xl">
+            <h3 class="text-lg font-bold text-emerald-400 mb-2">Membuka Akses Dokumen...</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Sistem sedang menyiapkan format dokumen A4 Anda. Mohon tunggu sejenak.</p>
+        </div>
+    </div>
+
+    <!-- MODAL CETAK -->
+    <div id="donasiModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center text-white p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-6 relative shadow-2xl text-center">
+            <button onclick="tutupModalDonasi()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl font-bold">&times;</button>
+            <h3 class="text-xl font-bold text-slate-100 mb-2">Cetak Dokumen</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-6">Klik tombol di bawah untuk membuka kunci teks dan mencetak dokumen Anda.</p>
+            <button onclick="bukaKunciDanCetak()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 px-4 rounded-xl text-sm transition">
+                🖨️ Cetak Dokumen Sekarang
+            </button>
+        </div>
+    </div>
+
+    <!-- SKRIP OTOMATISASI PENAMPIL HASIL AI -->
+    <script>
+        window.onload = function() {
+            // MEMBACA HASIL AI YANG DISIMPAN DARI DASHBOARD
+            const hasilAI = localStorage.getItem('pena_hasil_ai_temp');
+            const wadah = document.getElementById('dokumenCetak');
+            if (hasilAI && wadah) {
+                wadah.innerHTML = hasilAI;
+            }
+        };
+
+        function bukaModalDonasi() {
+            document.getElementById('donasiModal').classList.remove('hidden');
+        }
+
+        function tutupModalDonasi() {
+            document.getElementById('donasiModal').classList.add('hidden');
+        }
+
+        function bukaKunciDanCetak() {
+            tutupModalDonasi();
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.classList.remove('hidden');
+            
+            setTimeout(function() {
+                overlay.classList.add('hidden');
+                const dokumen = document.getElementById('dokumenCetak');
+                if (dokumen) {
+                    dokumen.classList.remove('locked-document');
+                    dokumen.setAttribute('contenteditable', 'true');
+                }
+                
+                const btnSalin = document.getElementById('btnSalin');
+                if (btnSalin) {
+                    btnSalin.removeAttribute('disabled');
+                    btnSalin.classList.remove('cursor-not-allowed', 'text-slate-500');
+                    btnSalin.classList.add('hover:bg-slate-700', 'text-slate-200');
+                }
+                
+                window.print();
+            }, 1000);
+        }
+
+        function salinSemuaTeks() {
+            const dokumen = document.getElementById('dokumenCetak');
+            if (dokumen && !dokumen.classList.contains('locked-document')) {
+                navigator.clipboard.writeText(dokumen.innerText).then(function() {
+                    alert('Teks dokumen berhasil disalin!');
+                });
+            }
+        }
+    </script>
+</body>
+</html>

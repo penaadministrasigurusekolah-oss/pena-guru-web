@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hubungi Kami - Pena Administrasi Guru</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <!-- Header Komponen Otomatis -->
+    <div id="header-container"></div>
+
+    <main class="max-w-4xl mx-auto px-6 py-12 flex-1 w-full">
+        <div class="bg-white p-8 md:p-10 rounded-2xl border border-slate-200 shadow-sm space-y-8">
+            <div>
+                <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Hubungi Kami</h1>
+                <p class="text-sm text-slate-500 mt-2">
+                    Punya pertanyaan, kendala teknis, atau saran pengembangan? Kami siap membantu Anda.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Kartu Informasi Kontak -->
+                <div class="p-6 bg-emerald-50 rounded-xl border border-emerald-100 space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-2xl">✉️</span>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-sm">Email Bantuan & Support</h3>
+                            <p class="text-xs text-emerald-700 font-medium">Layanan Respon Cepat</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Silakan kirimkan email Anda ke alamat resmi kami:
+                    </p>
+                    <a href="mailto:pena.administrasi.guru.sekolah@gmail.com" class="inline-block bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 px-4 rounded-lg transition">
+                        pena.administrasi.guru.sekolah@gmail.com
+                    </a>
+                </div>
+
+                <!-- Kartu Jam Layanan -->
+                <div class="p-6 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-2xl">⏰</span>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-sm">Jam Operasional</h3>
+                            <p class="text-xs text-slate-500">Waktu Layanan Admin</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Senin - Sabtu: 08.00 - 17.00 WIB<br>
+                        Minggu & Hari Libur Nasional: Tutup (Diproses hari kerja berikutnya)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Komponen Otomatis -->
+    <div id="footer-container"></div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
