@@ -12,6 +12,7 @@ async function muatKomponen(idElemen, jalurFile) {
       const wadah = document.getElementById(idElemen);
       if (wadah) {
         wadah.innerHTML = html;
+        return true;
       }
     } else {
       console.warn(`Gagal memuat komponen dari ${jalurFile}: Status ${respon.status}`);
@@ -19,11 +20,12 @@ async function muatKomponen(idElemen, jalurFile) {
   } catch (error) {
     console.error(`Error saat memuat ${jalurFile}:`, error);
   }
+  return false;
 }
 
 // Jalankan otomatis saat halaman selesai dimuat sepenuhnya
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   // Memuat Header dan Footer otomatis jika wadah pembungkusnya ada di halaman
-  muatKomponen("header-container", "assets/components/header.html");
-  muatKomponen("footer-container", "assets/components/footer.html");
+  await muatKomponen("header-container", "assets/components/header.html");
+  await muatKomponen("footer-container", "assets/components/footer.html");
 });
