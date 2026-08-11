@@ -1,63 +1,69 @@
 /**
- * Pena Administrasi Guru & Sekolah - Sekolah Controller
- * Mengontrol logika input form dan penghematan token berkas Lembaga/Sekolah
+ * Pena Administrasi Guru & Sekolah - Guru Controller
+ * Mengontrol logika input form dan penghematan token pembuatan berkas Guru
  * Arsitektur: Dana 0 Rupiah (JSON Parser, Hybrid Template)
  */
 
-const SekolahController = {
-    // Menyusun Prompt ketat khusus paket dokumen Lembaga/Sekolah
+const GuruController = {
+    // Menyusun Prompt ketat khusus paket dokumen Guru
     generatePrompt: function(formData) {
-        let promptBase = `Bertindaklah sebagai Konsultan Evaluasi Kurikulum Nasional 2026 tingkat makro dengan pendekatan Deep Learning. `;
-        promptBase += `Hasilkan data dalam format JSON BERSIH tanpa kalimat pembuka/penutup, dan tanpa markdown (\`\`\`json). Harus langsung objek JSON.\n\n`;
+        let promptBase = `Bertindaklah sebagai pakar Kurikulum Nasional 2026 dengan pendekatan Deep Learning (Mindful, Meaningful, Joyful). `;
+        promptBase += `Hasilkan data dalam format JSON BERSIH tanpa pembuka, tanpa penutup, dan tanpa markdown (\`\`\`json). Harus langsung objek JSON.\n\n`;
         
-        promptBase += `DATA INSTITUSI:\n`;
-        promptBase += `- Karakteristik: ${formData.karakteristikLembaga}\n`;
-        promptBase += `- Jenjang: ${formData.jenjang}\n`;
-        if(formData.raporSekolah) promptBase += `- Analisis Masalah Rapor Pendidikan: ${formData.raporSekolah}\n`;
+        promptBase += `DATA INPUT GURU:\n`;
+        promptBase += `- Tingkat/Kelas: ${formData.kelas}\n`;
+        promptBase += `- Mata Pelajaran: ${formData.mapel}\n`;
+        if(formData.hambatan) promptBase += `- Hambatan Siswa: ${formData.hambatan}\n`;
         
-        // Custom Prompt berdasarkan jenis berkas makro sekolah yang dipilih
+        // Custom Prompt berdasarkan jenis berkas yang dipilih agar hemat token
         switch(formData.jenisBerkas) {
-            case 'kosp_pendahuluan':
-                promptBase += `TUGAS: Rumuskan komponen dinamis untuk Bab Pendahuluan KOSP berlandaskan Permendikdasmen No.13 Tahun 2025. Penuhi struktur JSON ini:\n`;
+            case 'modul_ajar':
+                promptBase += `- Model Pembelajaran: ${formData.modelPembelajaran}\n`;
+                promptBase += `TUGAS: Buat draf aktivitas inti RPP/Modul Ajar 1 pertemuan yang meleburkan model tersebut ke 3 fase Pengalaman Belajar. Penuhi struktur JSON ini:\n`;
                 promptBase += JSON.stringify({
-                    karakteristik_khas: "1 paragraf tajam mengenai analisis kekuatan lingkungan, budaya lokal, dan ekosistem spesifik jenjang ini",
-                    kontekstualisasi_3pilar: "1 paragraf bagaimana visi lembaga ini menurunkan pilar Mindful, Meaningful, dan Joyful ke aksi nyata"
+                    tujuan_pembelajaran: "1 kalimat kompetensi esensial",
+                    pertanyaan_pemantik: ["1 pertanyaan pemantik pemahaman mendalam"],
+                    fase_memahami: "Aktivitas konkret guru memicu kesadaran/konflik kognitif sesuai sintaks awal model",
+                    fase_mengaplikasi: "Aktivitas kolaboratif/problem solving kelompok nyata sesuai inti model",
+                    fase_merefleksi: "Pertanyaan meta-kognitif siswa untuk merenungkan makna pelajaran"
                 }, null, 2);
                 break;
                 
-            case 'matriks_jadwal_blok':
-                promptBase += `TUGAS: Rancang kerangka pembagian waktu menggunakan Sistem Blok/Modular agar belajar bisa mendalam. Penuhi struktur JSON ini:\n`;
+            case 'lkpd':
+                promptBase += `TUGAS: Buat draf tantangan investigasi kelompok berbasis masalah (Problem Solving). Penuhi struktur JSON ini:\n`;
                 promptBase += JSON.stringify({
-                    pembagian_durasi_blok: "Penjelasan durasi blok harian/mingguan yang ideal untuk jenjang ini",
-                    contoh_penggabungan_mapel: "Rekomendasi 2 mapel yang digabung dalam satu blok proyek riset mini",
-                    catatan_fleksibilitas: "Cara mengantisipasi agar siswa tidak jenuh dengan durasi panjang (Joyful)"
+                    judul_tantangan: "Nama aktivitas menarik dan joyful",
+                    kasus_nyata: "Studi kasus pendek menarik seputar kehidupan sehari-hari siswa",
+                    langkah_eksplorasi: ["Langkah 1 investigasi", "Langkah 2 analisis"],
+                    ruang_kreatif_instruksi: "Petunjuk visual/gambar apa yang harus digambar siswa di lembar kerja"
                 }, null, 2);
                 break;
                 
-            case 'matriks_integrasi_8dimensi':
-                promptBase += `TUGAS: Buat matriks pemetaan pengganti proyek P5, tunjukkan bagaimana dimensi profil lulusan menyatu ke intrakurikuler. Penuhi struktur JSON ini:\n`;
+            case 'asesmen_diagnostik':
+                promptBase += `TUGAS: Buat instrumen pemetaan awal. Penuhi struktur JSON ini:\n`;
                 promptBase += JSON.stringify({
-                    dimensi_fokus: "Pilih 2-3 dari 8 dimensi lulusan terbaru yang paling relevan dengan kondisi/jenjang saat ini",
-                    metode_integrasi_materi: "Strategi praktis menyisipkan dimensi tersebut langsung ke dalam tema materi pelajaran inti"
+                    aspek_kognitif: ["2 pertanyaan prasyarat materi esensial"],
+                    aspek_non_kognitif: ["2 pertanyaan emosional/kesiapan mental siswa (Mindful)"]
                 }, null, 2);
                 break;
                 
-            case 'survei_wellbeing_murid':
-                promptBase += `TUGAS: Rancang instrumen evaluasi iklim emosional sekolah (Joyful Learning). Penuhi struktur JSON ini:\n`;
+            case 'asesmen_formatif':
+                promptBase += `TUGAS: Buat rubrik penilaian otentik berkelanjutan berdasarkan Dimensi Profil Lulusan yang relevan. Penuhi struktur JSON ini:\n`;
                 promptBase += JSON.stringify({
-                    indikator_kenyamanan: "Kriteria rasa aman dan bahagia siswa di lingkungan sekolah saat ini",
-                    daftar_pertanyaan_kuesioner: [
-                        "Pertanyaan 1 seputar hubungan dengan guru (skala deskriptif)",
-                        "Pertanyaan 2 seputar beban tugas (skala deskriptif)"
-                    ]
+                    dimensi_diukur: "Misal: Penalaran Kritis atau Kolaborasi",
+                    kriteria_layak: "Deskripsi perilaku siswa tingkat layak/cukup",
+                    kriteria_cakap: "Deskripsi perilaku siswa tingkat cakap/bagus",
+                    kriteria_mahir: "Deskripsi perilaku siswa tingkat mahir/mendalam",
+                    format_refleksi_diri: "1 kalimat pemantik penilaian diri sendiri"
                 }, null, 2);
                 break;
                 
-            default:
-                promptBase += `TUGAS: Berikan rekomendasi draf operasional tata kelola strategis jangka pendek untuk dokumen: ${formData.jenisBerkas}. Penuhi struktur JSON ini:\n`;
+            case 'kerangka_prota_promes':
+                promptBase += `TUGAS: Buat kerangka alokasi waktu makro. Penuhi struktur JSON ini:\n`;
                 promptBase += JSON.stringify({
-                    maksud_tujuan: "Tujuan pembuatan dokumen bagi institusi",
-                    poin_rekomendasi_utama: ["Rekomendasi aksi 1", "Rekomendasi aksi 2"]
+                    alokasi_minggu_efektif: "Total minggu ideal untuk mengupas materi secara mendalam",
+                    rincian_pekan_proyek: "Rencana 1 pekan khusus proyek kontekstual",
+                    ruang_remedial_diagnostik: "Strategi jeda waktu intervensi bagi anak yang lambat"
                 }, null, 2);
                 break;
         }
@@ -65,79 +71,79 @@ const SekolahController = {
         return promptBase;
     },
 
-    // Menangani rendering data JSON dari AI ke template HTML sekolah di preview-cetak
+    // Menangani rendering data JSON dari AI ke template HTML di preview-cetak
     renderToTemplate: function(berkasId, rawAiData, containerDoc) {
         try {
             const data = JSON.parse(rawAiData);
             let htmlResult = '';
             
+            // Mengubah data bersih JSON menjadi visual tabel/kolom yang super rapi di layout kertas
             switch(berkasId) {
-                case 'kosp_pendahuluan':
+                case 'modul_ajar':
                     htmlResult = `
                         <div class="p-6 border-2 border-slate-800 rounded-lg bg-white font-sans text-slate-800">
-                            <div class="text-center border-b-4 double border-slate-800 pb-2 mb-6">
-                                <h1 class="text-lg font-black tracking-widest uppercase">DOKUMEN OPERASIONAL SATUAN PENDIDIKAN</h1>
-                                <p class="text-xs tracking-wider mt-0.5">Visi Tata Kelola Makro Berbasis Permendikdasmen No. 13 Tahun 2025</p>
+                            <h2 class="text-xl font-bold text-center uppercase border-b-2 border-slate-800 pb-3 mb-4">Rencana Pelaksanaan Pembelajaran Mendalam (RPM)</h2>
+                            <p class="mb-2"><strong>Tujuan Pembelajaran (Kompetensi Esensial):</strong><br> ${data.tujuan_pembelajaran}</p>
+                            <p class="mb-4"><strong>Pertanyaan Pemantik:</strong><br> "${data.pertanyaan_pemantik[0]}"</p>
+                            
+                            <table class="w-full border-collapse border border-slate-700 text-sm mt-4">
+                                <thead class="bg-slate-100">
+                                    <tr>
+                                        <th class="border border-slate-700 p-2 w-1/4">Fase Pengalaman Belajar</th>
+                                        <th class="border border-slate-700 p-2">Skenario Langkah Operasional (Sintaks Model Aktif)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border border-slate-700 p-2 font-semibold bg-blue-50">1. Memahami (Mindful)</td>
+                                        <td class="border border-slate-700 p-2 leading-relaxed">${data.fase_memahami}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-slate-700 p-2 font-semibold bg-emerald-50">2. Mengaplikasi (Meaningful)</td>
+                                        <td class="border border-slate-700 p-2 leading-relaxed">${data.fase_mengaplikasi}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-slate-700 p-2 font-semibold bg-amber-50">3. Merefleksi (Joyful)</td>
+                                        <td class="border border-slate-700 p-2 leading-relaxed">${data.fase_merefleksi}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                    break;
+                
+                case 'lkpd':
+                    htmlResult = `
+                        <div class="p-6 border-2 border-dashed border-slate-700 bg-amber-50/20 rounded-xl">
+                            <div class="text-center mb-4">
+                                <span class="bg-amber-100 text-amber-800 font-bold px-3 py-1 rounded-full text-xs uppercase tracking-wider">Tantangan Investigasi Siswa</span>
+                                <h2 class="text-xl font-black text-slate-900 mt-1">${data.judul_tantangan}</h2>
                             </div>
-                            
-                            <h2 class="text-md font-bold uppercase mb-2">BAB I: PENDAHULUAN</h2>
-                            
-                            <div class="mb-4">
-                                <h3 class="text-sm font-bold text-slate-700 mb-1">A. Landasan Hukum Yuridis (Statis Nasional)</h3>
-                                <p class="text-xs text-justify leading-relaxed text-slate-600">
-                                    Dokumen ini disusun sebagai wujud kepatuhan terhadap Permendikdasmen Nomor 13 Tahun 2025 mengenai standarisasi Kurikulum Nasional melalui pendekatan Pembelajaran Mendalam (Deep Learning). Struktur makro kelembagaan dialihkan secara penuh untuk memprioritaskan pemahaman konseptual, transisi integrasi kokurikuler tanpa sekat P5 tradisional, serta pemenuhan lingkungan yang aman, adaptif, dan transformatif.
-                                </p>
+                            <div class="bg-white p-4 border border-slate-300 rounded-lg shadow-sm mb-4">
+                                <h4 class="font-bold text-sm text-amber-900 mb-1">🧭 Konteks Masalah Masalah Dunia Nyata:</h4>
+                                <p class="text-sm italic leading-relaxed text-slate-700">"${data.kasus_nyata}"</p>
                             </div>
-                            
-                            <div class="mb-4">
-                                <h3 class="text-sm font-bold text-slate-700 mb-1">B. Analisis Karakteristik Khas Satuan Pendidikan</h3>
-                                <p class="text-xs text-justify leading-relaxed bg-slate-50 p-3 border border-slate-200 rounded">${data.karakteristik_khas}</p>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <h3 class="text-sm font-bold text-slate-700 mb-1">C. Kontekstualisasi Strategis 3 Pilar Deep Learning</h3>
-                                <p class="text-xs text-justify leading-relaxed bg-slate-50 p-3 border border-slate-200 rounded">${data.kontekstualisasi_3pilar}</p>
+                            <h4 class="font-bold text-sm mb-2">🛠️ Langkah Eksplorasi Kelompok:</h4>
+                            <ol class="list-decimal list-inside space-y-1 text-sm mb-4">
+                                ${data.langkah_eksplorasi.map(step => `<li>${step}</li>`).join('')}
+                            </ol>
+                            <div class="border-2 border-dashed border-slate-400 h-40 flex flex-col items-center justify-center rounded-lg bg-white p-4">
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">[ Ruang Ekspresi Visual Siswa ]</p>
+                                <p class="text-xs text-center text-slate-500 max-w-xs">${data.ruang_kreatif_instruksi}</p>
                             </div>
                         </div>
                     `;
                     break;
-                    
-                case 'matriks_jadwal_blok':
-                    htmlResult = `
-                        <div class="p-6 border-2 border-slate-800 rounded-lg bg-white font-sans text-slate-800">
-                            <h2 class="text-lg font-bold text-center uppercase border-b border-slate-800 pb-2 mb-4">Matriks Penjadwalan Fleksibel (System Blok)</h2>
-                            
-                            <div class="space-y-3 text-xs">
-                                <p><strong>1. Rekomendasi Alokasi Durasi Blok:</strong><br> ${data.pembagian_durasi_blok}</p>
-                                <p><strong>2. Strategi Penggabungan Materi Kolaboratif:</strong><br> ${data.contoh_penggabungan_mapel}</p>
-                                
-                                <div class="mt-4 p-3 bg-amber-50 border border-amber-300 rounded text-amber-900">
-                                    <h4 class="font-bold mb-1">💡 Pengkondisian Iklim Kelas (Pilar Joyful):</h4>
-                                    <p class="leading-relaxed font-medium">${data.catatan_fleksibilitas}</p>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    break;
-                    
+
                 default:
-                    htmlResult = `
-                        <div class="p-6 border border-slate-800 rounded bg-white font-sans text-xs">
-                            <h2 class="text-sm font-bold uppercase border-b pb-2 mb-3">Draf Tata Kelola: ${berkasId.replace(/_/g, ' ')}</h2>
-                            <p class="mb-3"><strong>Maksud & Tujuan Dokumen:</strong><br> ${data.maksud_tujuan}</p>
-                            <h4 class="font-bold mb-1">📋 Poin Implementasi Utama Satuan:</h4>
-                            <ul class="list-disc list-inside space-y-1">
-                                ${data.poin_rekomendasi_utama ? data.poin_rekomendasi_utama.map(poin => `<li>${poin}</li>`).join('') : '<li>Draf berhasil dicatat di sistem lokal.</li>'}
-                            </ul>
-                        </div>
-                    `;
-                    break;
+                    // Fallback render generic sederhana jika tipe data belum spesifik
+                    htmlResult = `<div class="p-4 bg-white border border-slate-800 rounded shadow"><pre class="text-xs whitespace-pre-wrap">${JSON.stringify(data, null, 2)}</pre></div>`;
             }
             
             containerDoc.innerHTML = htmlResult;
         } catch (e) {
-            console.error("Gagal memproses data JSON Sekolah dari AI: ", e);
-            containerDoc.innerHTML = `<div class="p-4 bg-red-50 text-red-700 border border-red-300 rounded">Gagal memproses draf dokumen lembaga. Silakan coba klik cetak ulang.</div>`;
+            console.error("Gagal melakukan parsing data JSON dari AI: ", e);
+            containerDoc.innerHTML = `<div class="p-4 bg-red-50 text-red-700 border border-red-300 rounded">Gagal memproses draf otomatis. Silakan coba klik cetak ulang.</div>`;
         }
     }
 };
