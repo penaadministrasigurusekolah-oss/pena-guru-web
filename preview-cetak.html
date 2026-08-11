@@ -56,7 +56,7 @@
             <div class="bg-slate-800 p-4 rounded-lg border border-slate-700 mb-6 text-sm">
                 <div class="flex justify-between mb-2">
                     <span class="text-slate-400">Status:</span>
-                    <span class="font-medium text-emerald-400">Siap Ditinjau</span>
+                    <span id="labelStatusDokumen" class="font-medium text-emerald-400">Siap Ditinjau</span>
                 </div>
                 <div class="flex justify-between">
                     <span class="text-slate-400">Format:</span>
@@ -70,7 +70,7 @@
         </div>
 
         <div class="space-y-4">
-            <button onclick="bukaModalDonasi()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 px-4 rounded-lg font-medium transition duration-200 flex items-center justify-center space-x-2 shadow-lg shadow-emerald-500/20">
+            <button id="btnCetakModal" onclick="bukaModalDonasi()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 px-4 rounded-lg font-medium transition duration-200 flex items-center justify-center space-x-2 shadow-lg shadow-emerald-500/20">
                 <span>🖨️</span>
                 <span>Buka Kunci & Cetak PDF</span>
             </button>
@@ -117,13 +117,37 @@
     <!-- SKRIP OTOMATISASI PENAMPIL HASIL AI -->
     <script>
         window.onload = function() {
-            // MEMBACA HASIL AI YANG DISIMPAN DARI DASHBOARD
+            muatDokumenDariStorage();
+        };
+
+        function muatDokumenDariStorage() {
             const hasilAI = localStorage.getItem('pena_hasil_ai_temp');
             const wadah = document.getElementById('dokumenCetak');
-            if (hasilAI && wadah) {
+            const labelStatus = document.getElementById('labelStatusDokumen');
+            const btnCetak = document.getElementById('btnCetakModal');
+
+            if (hasilAI && hasilAI.trim() !== "" && wadah) {
                 wadah.innerHTML = hasilAI;
+            } else if (wadah) {
+                if (labelStatus) labelStatus.innerText = "Kosong";
+                if (btnCetak) {
+                    btnCetak.disabled = true;
+                    btnCetak.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+                wadah.innerHTML = `
+                    <div class="text-center py-20 font-sans space-y-4">
+                        <div class="text-4xl">⚠️</div>
+                        <h2 class="text-lg font-bold text-slate-800">Tidak Ada Data Dokumen</h2>
+                        <p class="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
+                            Belum ada dokumen yang diproses. Silakan kembali ke dasbor untuk mengisi formulir dan memicu pemrosesan AI.
+                        </p>
+                        <a href="dashboard.html" class="inline-block bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 px-5 rounded-xl transition decoration-none shadow-sm">
+                            &larr; Kembali ke Dashboard
+                        </a>
+                    </div>
+                `;
             }
-        };
+        }
 
         function bukaModalDonasi() {
             document.getElementById('donasiModal').classList.remove('hidden');
@@ -162,6 +186,8 @@
             if (dokumen && !dokumen.classList.contains('locked-document')) {
                 navigator.clipboard.writeText(dokumen.innerText).then(function() {
                     alert('Teks dokumen berhasil disalin!');
+                }).catch(function(err) {
+                    console.error("Gagal menyalin:", err);
                 });
             }
         }
