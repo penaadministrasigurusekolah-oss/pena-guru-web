@@ -123,7 +123,7 @@
 
     </main>
 
-    <!-- ADSENSE BANNER BAHAW -->
+    <!-- ADSENSE BANNER BAWAH -->
     <div class="w-full max-w-4xl mx-auto mb-6 px-4">
         <div class="bg-white border border-dashed border-slate-300 text-center py-4 text-xs text-slate-400 rounded-xl">
             Ruang Iklan AdSense (Banner Bawah)
@@ -184,7 +184,8 @@
         <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Hak Cipta &copy; Pena Administrasi Guru</p>
     </footer>
 
-    <!-- LOGIKA JAVASCRIPT -->
+    <!-- SKRIP KONTROL USER DB & LOGIN -->
+    <script src="js/services/user-db.js"></script>
     <script>
         window.onload = function() {
             if (!localStorage.getItem('thc_user_consent')) {
@@ -207,7 +208,7 @@
         }
 
         // CALLBACK OTENTIKASI GOOGLE SIGN-IN RESMI
-        function handleGoogleLoginResponse(response) {
+        async function handleGoogleLoginResponse(response) {
             try {
                 // Decode JWT Token dari Google
                 const base64Url = response.credential.split('.')[1];
@@ -220,6 +221,11 @@
                 localStorage.setItem('pena_user_name', profile.name);
                 localStorage.setItem('thc_login_method', 'Google (' + profile.email + ')');
                 localStorage.setItem('thc_kuota_gratis', 5);
+
+                // OTOMATIS CEK & PULIHKAN DARI GOOGLE SHEETS JIKA LOCALSTORAGE DULU PERNAH TERHAPUS
+                if (typeof UserDB !== 'undefined' && UserDB.pulihkanStatusPengguna) {
+                    await UserDB.pulihkanStatusPengguna(profile.email);
+                }
 
                 alert(`✨ Selamat Datang, ${profile.name}!\nLogin Google berhasil.`);
                 window.location.href = 'dashboard.html';
