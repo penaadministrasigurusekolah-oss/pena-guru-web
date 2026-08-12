@@ -7,6 +7,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <!-- LOAD DATA SISTEM & UTILITIES LEBIH AWAL -->
+    <script src="js/config/data-sistem.js"></script>
+    <script src="js/services/user-db.js"></script>
+    <script src="js/core/ai-handler.js"></script>
+    <script src="js/services/payment-handler.js"></script>
+
     <style>
         body { font-family: 'Inter', sans-serif; }
         .animate-fade-in {
@@ -69,6 +75,7 @@
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-500 mb-1">Karakteristik Satuan Pendidikan</label>
                             <select id="selectKarakteristik" onchange="handleKarakteristikLembaga()" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                                <option value="">-- Memuat Karakteristik... --</option>
                             </select>
                         </div>
 
@@ -303,32 +310,42 @@
         <p>Hak Cipta &copy; Pena Administrasi Guru - Dashboard Panel Utama</p>
     </footer>
 
-    <!-- LINK DATA KONTROLER PUSAT DANA 0 RUPIAH -->
-    <script src="js/config/data-sistem.js"></script>
-    <!-- LINK KEAMANAN & PENGIRIM AI -->
-    <script src="js/core/ai-handler.js"></script>
-    <!-- LINK LAYANAN PAYMENT & QRIS -->
-    <script src="js/services/payment-handler.js"></script>
-
     <script>
         let tipeAktif = "Guru";
 
-        window.onload = function() {
+        // MENGGUNAKAN DOMCONTENTLOADED SUPAYA TAMPILAN TIDAK BLANK
+        document.addEventListener("DOMContentLoaded", function() {
             let metode = localStorage.getItem('thc_login_method') || 'Tamu';
             let kuota = localStorage.getItem('thc_kuota_gratis') || '1';
             document.getElementById('infoMetode').innerText = metode;
             document.getElementById('infoKuota').innerText = kuota + " Sesi Kerja";
             
+            // JALANKAN INISIALISASI DENGAN GUARD CHECK
             initKarakteristikLembaga();
             initCheckboxBerkasGuru();
             updateOpsiTurunan();
-        };
+        });
 
         function initKarakteristikLembaga() {
             const selectK = document.getElementById('selectKarakteristik');
+            if(!selectK) return;
             selectK.innerHTML = "";
+
             if (typeof DATA_SISTEM !== 'undefined' && DATA_SISTEM.karakteristikLembaga) {
                 DATA_SISTEM.karakteristikLembaga.forEach(item => {
+                    let opt = document.createElement('option');
+                    opt.value = item.id;
+                    opt.innerText = item.nama;
+                    selectK.appendChild(opt);
+                });
+            } else {
+                // FALLBACK JIKA JS LATE-LOAD
+                let defaultOpts = [
+                    {id: 'reguler', nama: 'Sekolah Reguler / Umum'},
+                    {id: 'inklusi', nama: 'Sekolah Inklusi'},
+                    {id: 'slb', nama: 'Sekolah Luar Biasa (SLB)'}
+                ];
+                defaultOpts.forEach(item => {
                     let opt = document.createElement('option');
                     opt.value = item.id;
                     opt.innerText = item.nama;
@@ -339,12 +356,23 @@
 
         function initCheckboxBerkasGuru() {
             const wrapper = document.getElementById('wrapperCheckboxGuru');
+            if(!wrapper) return;
             wrapper.innerHTML = "";
+
             if (typeof DATA_SISTEM !== 'undefined' && DATA_SISTEM.berkasGuru) {
                 DATA_SISTEM.berkasGuru.forEach((berkas, index) => {
                     let label = document.createElement('label');
                     label.className = "flex items-center space-x-1.5 bg-white p-2 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition";
                     label.innerHTML = `<input type="checkbox" name="outGuru" value="${berkas.id}" ${index === 0 ? 'checked' : ''} class="accent-emerald-600"> <span class="truncate">${berkas.nama.split(' ')[0]} ${berkas.nama.split(' ')[1] || ''}</span>`;
+                    wrapper.appendChild(label);
+                });
+            } else {
+                // FALLBACK DEFAULT CHECKBOX
+                let defaultBerkas = ["Modul Ajar", "LKPD Siswa", "Rubrik Asesmen", "Jurnal Harian"];
+                defaultBerkas.forEach((b, index) => {
+                    let label = document.createElement('label');
+                    label.className = "flex items-center space-x-1.5 bg-white p-2 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition";
+                    label.innerHTML = `<input type="checkbox" name="outGuru" value="${b}" ${index === 0 ? 'checked' : ''} class="accent-emerald-600"> <span class="truncate">${b}</span>`;
                     wrapper.appendChild(label);
                 });
             }
@@ -452,6 +480,11 @@
                         opt.innerText = mapel;
                         selectD.appendChild(opt);
                     });
+                } else {
+                    let optDefault = document.createElement('option');
+                    optDefault.value = "Umum / Tematik";
+                    optDefault.innerText = "Umum / Tematik";
+                    selectD.appendChild(optDefault);
                 }
             } else {
                 if (typeof DATA_SISTEM !== 'undefined' && DATA_SISTEM.berkasSekolah) {
@@ -536,7 +569,6 @@
             const btnSubmit = document.getElementById('btnSubmitAI');
             const btnText = document.getElementById('btnText');
             
-            // Ubah UI ke status loading
             btnSubmit.disabled = true;
             btnSubmit.classList.add('opacity-75', 'cursor-not-allowed');
             btnText.innerHTML = `⏳ Sedang Meracik Dokumen AI...`;
@@ -567,7 +599,6 @@
                 console.error("Terjadi kesalahan:", err);
                 alert("❌ Terjadi kesalahan saat menghubungi server AI.");
             } finally {
-                // Kembalikan status tombol
                 btnSubmit.disabled = false;
                 btnSubmit.classList.remove('opacity-75', 'cursor-not-allowed');
                 btnText.innerHTML = `✨ Jalankan Asisten Pemrosesan AI Gratisan`;
