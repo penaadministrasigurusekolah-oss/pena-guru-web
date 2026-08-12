@@ -98,30 +98,34 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-[11px] font-semibold text-slate-500 mb-1">Pilih Tingkatan Jenjang & Fase Kelas</label>
+                                <label class="block text-[11px] font-semibold text-slate-500 mb-1">Pilih Tingkatan Jenjang & Kelas</label>
                                 <select id="selectJenjang" onchange="updateOpsiTurunan()" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
                                     <option value="">-- Pilih Tingkat Kelas --</option>
-                                    <optgroup label="TK / PAUD (Fase Fondasi)">
-                                        <option value="TK-A">Fase Fondasi - TK Kelompok A (Usia 4-5 Tahun)</option>
-                                        <option value="TK-B">Fase Fondasi - TK Kelompok B (Usia 5-6 Tahun)</option>
+                                    
+                                    <optgroup label="TK / PAUD">
+                                        <option value="TK-A">TK Kelompok A (Usia 4-5 Tahun)</option>
+                                        <option value="TK-B">TK Kelompok B (Usia 5-6 Tahun)</option>
                                     </optgroup>
+                                    
                                     <optgroup label="Sekolah Dasar (SD) / SDLB">
-                                        <option value="SD-1">Fase A - Kelas 1 SD</option>
-                                        <option value="SD-2">Fase A - Kelas 2 SD</option>
-                                        <option value="SD-3">Fase B - Kelas 3 SD</option>
-                                        <option value="SD-4">Fase B - Kelas 4 SD</option>
-                                        <option value="SD-5">Fase C - Kelas 5 SD (Ada Koding & AI)</option>
-                                        <option value="SD-6">Fase C - Kelas 6 SD</option>
+                                        <option value="SD-1">Kelas 1 SD</option>
+                                        <option value="SD-2">Kelas 2 SD</option>
+                                        <option value="SD-3">Kelas 3 SD</option>
+                                        <option value="SD-4">Kelas 4 SD</option>
+                                        <option value="SD-5">Kelas 5 SD (Ada Koding & AI)</option>
+                                        <option value="SD-6">Kelas 6 SD</option>
                                     </optgroup>
+                                    
                                     <optgroup label="Sekolah Menengah Pertama (SMP) / SMPLB">
-                                        <option value="SMP-7">Fase D - Kelas 7 SMP (Ada Koding & AI)</option>
-                                        <option value="SMP-8">Fase D - Kelas 8 SMP</option>
-                                        <option value="SMP-9">Fase D - Kelas 9 SMP</option>
+                                        <option value="SMP-7">Kelas 7 SMP (Ada Koding & AI)</option>
+                                        <option value="SMP-8">Kelas 8 SMP</option>
+                                        <option value="SMP-9">Kelas 9 SMP</option>
                                     </optgroup>
+                                    
                                     <optgroup label="SMA / SMALB / SMK">
-                                        <option value="SMA-10">Fase E - Kelas 10 SMA/SMK (Ada Koding & AI)</option>
-                                        <option value="SMA-11">Fase F - Kelas 11 SMA/SMK</option>
-                                        <option value="SMA-12">Fase F - Kelas 12 SMA/SMK</option>
+                                        <option value="SMA-10">Kelas 10 SMA/SMK (Ada Koding & AI)</option>
+                                        <option value="SMA-11">Kelas 11 SMA/SMK</option>
+                                        <option value="SMA-12">Kelas 12 SMA/SMK</option>
                                     </optgroup>
                                 </select>
                             </div>
@@ -313,14 +317,12 @@
     <script>
         let tipeAktif = "Guru";
 
-        // MENGGUNAKAN DOMCONTENTLOADED SUPAYA TAMPILAN TIDAK BLANK
         document.addEventListener("DOMContentLoaded", function() {
             let metode = localStorage.getItem('thc_login_method') || 'Tamu';
             let kuota = localStorage.getItem('thc_kuota_gratis') || '1';
             document.getElementById('infoMetode').innerText = metode;
             document.getElementById('infoKuota').innerText = kuota + " Sesi Kerja";
             
-            // JALANKAN INISIALISASI DENGAN GUARD CHECK
             initKarakteristikLembaga();
             initCheckboxBerkasGuru();
             updateOpsiTurunan();
@@ -339,7 +341,6 @@
                     selectK.appendChild(opt);
                 });
             } else {
-                // FALLBACK JIKA JS LATE-LOAD
                 let defaultOpts = [
                     {id: 'reguler', nama: 'Sekolah Reguler / Umum'},
                     {id: 'inklusi', nama: 'Sekolah Inklusi'},
@@ -367,7 +368,6 @@
                     wrapper.appendChild(label);
                 });
             } else {
-                // FALLBACK DEFAULT CHECKBOX
                 let defaultBerkas = ["Modul Ajar", "LKPD Siswa", "Rubrik Asesmen", "Jurnal Harian"];
                 defaultBerkas.forEach((b, index) => {
                     let label = document.createElement('label');
