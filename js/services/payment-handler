@@ -1,6 +1,6 @@
 /**
  * Pena Administrasi Guru & Sekolah - Payment & Access Handler
- * Versi Multi-Step + Jalur Darurat Tersembunyi + Sinkronisasi AI Master Prompt (v3)
+ * Versi Multi-Step + Jalur Darurat Tersembunyi + Auto Backup Cloud Google Sheets (v4)
  */
 
 const PaymentHandler = {
@@ -14,14 +14,21 @@ const PaymentHandler = {
         return localStorage.getItem(`pena_unlock_${berkasId}`) === 'true';
     },
 
-    // 2. AKTIFKAN AKSES DOKUMEN & LOKAL AKUN PREMIUM
-    unlockDocumentPermanently: function(berkasId) {
-        // Aktifkan kunci per dokumen
+    // 2. AKTIFKAN AKSES DOKUMEN & LOKAL AKUN PREMIUM + BACKUP CLOUD
+    unlockDocumentPermanently: function(berkasId, namaBerkas = "-", angkaTiket = "-") {
+        // A. Aktifkan kunci lokal browser
         localStorage.setItem(`pena_unlock_${berkasId}`, 'true');
-        
-        // SINKRONISASI AI HANDLER: Aktifkan status QRIS Verified untuk Master Prompt Premium
         localStorage.setItem('qris_verified', 'true');
         localStorage.setItem('pena_user_premium', 'true');
+
+        // B. SINKRONISASI OTOMATIS KE REKAP GOOGLE SHEETS ADMIN
+        if (typeof UserDB !== 'undefined' && UserDB.simpanPenggunaKeCloud) {
+            UserDB.simpanPenggunaKeCloud({
+                kodePaket: berkasId,
+                idTiket: `PENA-${angkaTiket}`,
+                expiredDate: berkasId.includes('bulan') ? 'Sesuai Paket' : 'Eceran/Permanen'
+            });
+        }
     },
 
     hitungKunciJawaban: function(angkaAcak) {
@@ -43,6 +50,9 @@ const PaymentHandler = {
             alert("⚠️ Alamat email wajib diisi!");
             return;
         }
+
+        // Simpan email yang diketik ke localStorage agar tercatat saat backup
+        localStorage.setItem('pena_user_email', email.trim());
 
         const emailInputArea = document.getElementById('email-input-area');
         if (emailInputArea) {
@@ -91,7 +101,7 @@ const PaymentHandler = {
             infoBox.className = "mt-2 p-2 bg-emerald-50 border border-emerald-200 rounded-lg text-center animate-fade-in";
             infoBox.innerHTML = `
                 <p class="text-emerald-800 font-bold text-[10px] mb-1">🎉 ID Tiket Cocok!</p>
-                <button onclick="PaymentHandler.eksekusiKlaimLangsung('${berkasId}', ${kunciJawabanAsli})" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 rounded text-[11px] cursor-pointer">
+                <button onclick="PaymentHandler.eksekusiKlaimLangsung('${berkasId}', ${kunciJawabanAsli}, ${angkaTiketAsli})" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 rounded text-[11px] cursor-pointer">
                     🔓 Klik untuk Buka Berkas Sekarang
                 </button>
             `;
@@ -100,8 +110,8 @@ const PaymentHandler = {
         }
     },
 
-    eksekusiKlaimLangsung: function(berkasId, kunci) {
-        this.unlockDocumentPermanently(berkasId);
+    eksekusiKlaimLangsung: function(berkasId, kunci, angkaTiket = "-") {
+        this.unlockDocumentPermanently(berkasId, berkasId, angkaTiket);
         alert("🎉 Berhasil! Akses Premium & Master Prompt AI Anda telah aktif.");
         const targetModal = document.getElementById('modal-qris-payment');
         if (targetModal) targetModal.remove();
@@ -224,7 +234,7 @@ const PaymentHandler = {
         const kunciJawabanAsli = this.hitungKunciJawaban(angkaTiket);
 
         if (userKunci === kunciJawabanAsli) {
-            this.unlockDocumentPermanently(berkasId);
+            this.unlockDocumentPermanently(berkasId, berkasId, angkaTiket);
             alert("🎉 Selamat! Kunci akses cocok. Akses Premium & Master Prompt AI Anda telah terbuka.");
             
             const targetModal = document.getElementById('modal-qris-payment');
