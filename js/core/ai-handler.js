@@ -1,17 +1,20 @@
 /**
  * PENA-GURU - AI PROCESSING ENGINE
- * Multi-Pool Serverless Engine via Google Apps Script (GAS)
+ * Multi-Pool Proxy Backend Integration (GAS Pool 1, 2, 3)
  */
 
 const AIHandler = {
-    // 🌟 1. POOL URL GOOGLE APPS SCRIPT (BERISI PROXY AKUN & API KEY ANDA)
+    // 🌟 1. POOL URL GOOGLE APPS SCRIPT (URL DEPLOYMENT BARU)
     GAS_POOLS: [
-        "https://script.google.com/macros/s/AKfycbyW7cqULCe91u0gjfwVH57DQ0o4xnE7fJdIqIWRYHA_zhnVkdfyqy_Pjv3B17GoP0aR/exec",
-        "https://script.google.com/macros/s/AKfycbyX8PL-hWFvYii9TQ9_uUi-wrqtpNks5aKPuA5GG71m31LrHh3J7cIqNCLZUxtBF2Uf/exec",
-        "https://script.google.com/macros/s/AKfycbyfrpbIju9cZSGl_mO-wCmN8X2If0E_P4Tl1HB4xjIJqR3FrX2rygBK2n-ZsnyYUEqf/exec"
+        "https://script.google.com/macros/s/AKfycbxXruvn4R7W97db4ldwafjiNXDEEjiA9q_3nrYPqGf4_hnKxd3-CT-PzkUIy33lR05j/exec",
+        "https://script.google.com/macros/s/AKfycbxftDoSk0GnEWKRLtHzdgfocApwflZQq3afDlVH0RoG1uGr2kfh9mfeNJEZ1ubXrsM/exec",
+        "https://script.google.com/macros/s/AKfycbzE77Dcu_VshLoK4hHT8Cg6CE3L6YLTFfiIQPDE3InYEKuWPE4ibAgHM4LkYRTUWNta/exec"
     ],
 
-    // Memilih server proxy secara acak dari pool untuk meratakan beban kuota
+    // PIN Rahasia Pintu Masuk Server GAS
+    SYSTEM_PIN: "622742",
+
+    // Memilih server proxy acak dari pool untuk meratakan kuota
     getGasUrl: function() {
         const index = Math.floor(Math.random() * this.GAS_POOLS.length);
         return this.GAS_POOLS[index];
@@ -22,47 +25,55 @@ async function kirimPermintaanModulAI(dataInput) {
     try {
         console.log("[Pena Guru AI] Memulai pemrosesan dokumen...");
 
-        // PROMPT INTEGRASI KURIKULUM NASIONAL & DEEP LEARNING
-        const promptSystem = `
-Anda adalah Pakar Kurikulum Nasional & Pembelajaran Mendalam (Deep Learning) Indonesia.
-Susunlah draf dokumen administrasi lengkap dengan rincian:
-- Nama Pengajar/Penyusun: ${dataInput.namaGuru}
-- Mata Pelajaran: ${dataInput.mapel}
-- Tingkat / Jenjang: ${dataInput.jenjang}
-- Materi Pokok: ${dataInput.materiPokok}
-- Satuan Pendidikan: ${dataInput.jenisSekolah}
-- Hambatan / Catatan Khusus Siswa: ${dataInput.hambatanSiswa}
+        // SUSUN PAYLOAD LENGKAP DENGAN SECURE PIN & FITUR MASTER PROMPT
+        const payloadData = {
+            secure_pin: AIHandler.SYSTEM_PIN,
+            is_premium: true, // Memicu DOKUMEN SUPER LENGKAP (A4 Siap Cetak)
+            namaGuru: dataInput.namaGuru || "Guru Pengajar",
+            mapel: dataInput.mapel || "Umum",
+            jenjang: dataInput.jenjang || "SD",
+            materiPokok: dataInput.materiPokok || "Materi Utama",
+            jenisSekolah: dataInput.jenisSekolah || "Reguler",
+            hambatanSiswa: dataInput.hambatanSiswa || "Tidak Ada"
+        };
 
-Sajikan keluaran dokumen secara profesional menggunakan tag HTML terstruktur (seperti <h2>, <h3>, <table>, <p>, <ul>, <ol>) yang siap cetak dan rapi tanpa markdown code block.
-`;
+        let lastError = null;
 
-        const targetGasUrl = AIHandler.getGasUrl();
-        console.log("[Pena Guru AI] Mengirim permintaan via Server Proxy Pool:", targetGasUrl);
+        // ROTASI PANGGILAN POOL SERVER GAS
+        for (let i = 0; i < AIHandler.GAS_POOLS.length; i++) {
+            const targetGasUrl = AIHandler.GAS_POOLS[i];
+            console.log(`[Pena Guru AI] Mengirim data ke Server Pool ${i + 1}:`, targetGasUrl);
 
-        const response = await fetch(targetGasUrl, {
-            method: "POST",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify({ prompt: promptSystem, data: dataInput })
-        });
+            try {
+                const response = await fetch(targetGasUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify(payloadData),
+                    redirect: "follow"
+                });
 
-        if (!response.ok) {
-            throw new Error(`Server Proxy merespons dengan status HTTP ${response.status}`);
+                if (response.ok) {
+                    const gasData = await response.json();
+                    
+                    if (gasData.status === "success" && gasData.data) {
+                        console.log(`[Pena Guru AI] Berhasil diproses (Sumber: ${gasData.source})`);
+                        return gasData.data; // Mengambil hasil teks HTML dari properti 'data'
+                    } else if (gasData.status === "error") {
+                        console.warn(`Server Proxy Pool ${i + 1} mengembalikan error:`, gasData.message);
+                        lastError = new Error(gasData.message);
+                    }
+                } else {
+                    console.warn(`Server Pool ${i + 1} merespons dengan HTTP Status: ${response.status}`);
+                }
+            } catch (errLoop) {
+                console.warn(`Gagal terhubung ke Pool ${i + 1}:`, errLoop);
+                lastError = errLoop;
+            }
         }
 
-        const gasData = await response.json();
-        let hasilTeks = null;
-
-        if (gasData.status === "success" && gasData.result) {
-            hasilTeks = gasData.result;
-        } else if (typeof gasData === "string") {
-            hasilTeks = gasData;
-        }
-
-        if (!hasilTeks) {
-            throw new Error("Gagal menerima hasil peracikan dari server proxy AI.");
-        }
-
-        return hasilTeks;
+        throw new Error(lastError?.message || "Gagal terhubung ke server proxy AI. Periksa koneksi internet Anda.");
 
     } catch (error) {
         console.error("[Pena Guru Error] Terjadi kendala pemrosesan AI:", error);
