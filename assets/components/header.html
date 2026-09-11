@@ -1,31 +1,60 @@
-<!-- Header Navigation -->
-<header class="bg-white/90 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
+<!-- ========================================== -->
+<!-- HEADER UTAMA DASHBOARD PENA-GURU           -->
+<!-- ========================================== -->
+<header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-16">
+    <div class="flex items-center justify-between h-16">
       
-      <!-- Logo & Brand -->
-      <div class="flex items-center space-x-3">
-        <a href="index.html" class="flex items-center gap-2 text-decoration-none">
-          <img src="assets/img/logo-pena.png" alt="Pena-Guru Logo" class="h-9 w-auto object-contain">
-          <span class="text-xl font-bold text-slate-800 tracking-tight">Pena-Guru</span>
+      <!-- Brand Logo & System Title -->
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="flex items-center gap-2">
+          <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-xl shadow-md">
+            P
+          </div>
+          <div class="hidden sm:block">
+            <span class="text-lg font-bold text-slate-800 tracking-tight block leading-none">PENA-GURU</span>
+            <span class="text-[10px] text-indigo-600 font-semibold uppercase tracking-wider block mt-1">Platform Administrasi AI</span>
+          </div>
         </a>
       </div>
 
-      <!-- Desktop Navigation Links -->
-      <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
-        <a href="index.html" class="hover:text-emerald-600 transition-colors">Beranda</a>
-        <a href="about.html" class="hover:text-emerald-600 transition-colors">Tentang Kami</a>
-        <a href="contact.html" class="hover:text-emerald-600 transition-colors">Kontak</a>
-      </nav>
+      <!-- Center / Right: Widget Status Tier Pengguna & Profil -->
+      <div class="flex items-center gap-3 sm:gap-4">
+        
+        <!-- WIDGET STATUS TIER (Indikator Akses Pasif & Active Countdown) -->
+        <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full py-1.5 px-3">
+          <!-- Tier Badge (Berubah warna via JS sesuai Tier aktif) -->
+          <span id="tierBadge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-200 text-slate-700 transition-all">
+            FREE TIER
+          </span>
+          
+          <!-- Informasi Masa Berlaku / Sisa Sesi -->
+          <span id="tierExpiryInfo" class="text-xs text-slate-500 hidden md:inline font-medium">
+            Sisa Sesi: 3x Hari Ini
+          </span>
 
-      <!-- Action Buttons -->
-      <div class="hidden md:flex items-center space-x-3">
-        <a href="payment.html" class="px-4 py-2 text-sm font-medium text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors">
-          Langganan Premium
-        </a>
-        <a href="dashboard.html" class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-sm transition-all">
-          Masuk Dashboard
-        </a>
+          <!-- Tombol Switch / Upgrade Tier (Membuka Modal Pop-Up 4 Tier) -->
+          <button type="button" onclick="openTierSelectorModal()" class="ml-1 inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-2.5 py-1 rounded-full transition-all shadow-sm active:scale-95">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 0121 9z"/>
+            </svg>
+            <span class="hidden sm:inline">Ubah Tier / Scan QR</span>
+            <span class="sm:hidden">Tier</span>
+          </button>
+        </div>
+
+        <!-- Profil Pengguna (Google Auth State) -->
+        <div class="flex items-center gap-2 pl-2 border-l border-slate-200">
+          <div id="userAvatarContainer" class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-xs border border-slate-300 overflow-hidden">
+            <span id="userInitial">G</span>
+            <img id="userAvatar" src="" class="w-full h-full object-cover hidden" alt="User Profile">
+          </div>
+          <div class="hidden lg:block text-left">
+            <span id="userNameDisplay" class="text-xs font-semibold text-slate-700 block leading-tight">Guru Pengajar</span>
+            <span id="userEmailDisplay" class="text-[10px] text-slate-400 block leading-tight">GUEST SESSION</span>
+          </div>
+        </div>
+
       </div>
 
     </div>
