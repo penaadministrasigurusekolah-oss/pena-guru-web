@@ -4,11 +4,11 @@
  */
 
 const AIHandler = {
-    // 🌟 1. POOL URL GOOGLE APPS SCRIPT (URL DEPLOYMENT BARU)
+    // 🌟 POOL URL GOOGLE APPS SCRIPT (URL DEPLOYMENT TERBARU)
     GAS_POOLS: [
-        "https://script.google.com/macros/s/AKfycbxXruvn4R7W97db4ldwafjiNXDEEjiA9q_3nrYPqGf4_hnKxd3-CT-PzkUIy33lR05j/exec",
-        "https://script.google.com/macros/s/AKfycbxftDoSk0GnEWKRLtHzdgfocApwflZQq3afDlVH0RoG1uGr2kfh9mfeNJEZ1ubXrsM/exec",
-        "https://script.google.com/macros/s/AKfycbzE77Dcu_VshLoK4hHT8Cg6CE3L6YLTFfiIQPDE3InYEKuWPE4ibAgHM4LkYRTUWNta/exec"
+        "https://script.google.com/macros/s/AKfycbwRVORWuhXZLPkjgHX3xqiPuWaHqE5RPXRWsfK0rmX93V--H89KmWRTgnSLLZtxCF45/exec",
+        "https://script.google.com/macros/s/AKfycbxjBbLlhobFOcHUyttDuJYpluQ1EY_32BOmTHKu89vCerHXgedzTtK4mxWzm5_ihLHN/exec",
+        "https://script.google.com/macros/s/AKfycbzNX8KXtHJ8rw3PW1urDaMALNnj5zdMW0mmRBzIcgdeRl36h2zHQN5RUjTm_HnoROYv/exec"
     ],
 
     // PIN Rahasia Pintu Masuk Server GAS
