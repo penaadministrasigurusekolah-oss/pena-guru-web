@@ -1,54 +1,49 @@
-<!-- Footer Section -->
-<footer class="bg-slate-900 text-slate-300 pt-12 pb-8 mt-12">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+<!-- ========================================== -->
+<!-- FOOTER UTAMA DASHBOARD PENA-GURU           -->
+<!-- ========================================== -->
+<footer class="bg-slate-900 text-slate-400 text-xs border-t border-slate-800 mt-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center justify-between">
       
-      <!-- Brand Profile -->
-      <div class="md:col-span-1 space-y-4">
-        <div class="flex items-center gap-2">
-          <img src="assets/img/logo-pena.png" alt="Pena-Guru Logo" class="h-8 w-auto brightness-200">
-          <span class="text-lg font-bold text-white tracking-wide">Pena-Guru</span>
+      <!-- Kolom 1: Branding & Hak Cipta -->
+      <div class="space-y-2 text-center md:text-left">
+        <div class="flex items-center justify-center md:justify-start gap-2">
+          <span class="font-bold text-white text-sm">PENA-GURU AI</span>
+          <span class="bg-indigo-900 text-indigo-300 text-[10px] font-semibold px-2 py-0.5 rounded border border-indigo-700">v2.6 Stable</span>
         </div>
-        <p class="text-sm text-slate-400 leading-relaxed">
-          Platform digital pendukung administrasi sekolah dan guru terpadu berbasis AI & otomatisasi.
+        <p class="text-slate-400 leading-relaxed text-[11px]">
+          Sistem otomatisasi administrasi guru berbasis kecerdasan buatan, terintegrasi Kurikulum Merdeka & standar regulasi pemerintah.
         </p>
       </div>
 
-      <!-- Quick Navigation -->
-      <div>
-        <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">Navigasi</h4>
-        <ul class="space-y-2 text-sm">
-          <li><a href="index.html" class="hover:text-white transition-colors">Beranda</a></li>
-          <li><a href="about.html" class="hover:text-white transition-colors">Tentang Kami</a></li>
-          <li><a href="contact.html" class="hover:text-white transition-colors">Kontak Support</a></li>
-        </ul>
+      <!-- Kolom 2: Tautan Cepat & Lisensi -->
+      <div class="flex items-center justify-center gap-6 text-slate-300">
+        <a href="index.html" class="hover:text-indigo-400 transition">Beranda</a>
+        <a href="javascript:void(0)" onclick="openTierSelectorModal()" class="hover:text-indigo-400 transition">Cek Lisensi QR</a>
+        <a href="sitemap.xml" target="_blank" class="hover:text-indigo-400 transition">Sitemap</a>
       </div>
 
-      <!-- Product & Features -->
-      <div>
-        <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">Layanan</h4>
-        <ul class="space-y-2 text-sm">
-          <li><a href="dashboard.html" class="hover:text-white transition-colors">Dashboard Guru</a></li>
-          <li><a href="preview-cetak.html" class="hover:text-white transition-colors">Preview Cetak</a></li>
-          <li><a href="payment.html" class="hover:text-white transition-colors">Opsi Pembayaran</a></li>
-        </ul>
+      <!-- Kolom 3: Hak Cipta & Keamanan -->
+      <div class="text-center md:text-right space-y-1">
+        <p class="text-slate-400 text-[11px]">&copy; 2026 PENA-GURU. Hak Cipta Dilindungi Undang-Undang.</p>
+        <p class="text-slate-500 text-[10px]">Terhubung secara aman melalui OAuth Google & Database Apps Script Proxy.</p>
       </div>
 
-      <!-- Legal & Terms -->
-      <div>
-        <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">Kebijakan</h4>
-        <ul class="space-y-2 text-sm">
-          <li><a href="privacy-policy.html" class="hover:text-white transition-colors">Kebijakan Privasi</a></li>
-          <li><a href="terms-of-service.html" class="hover:text-white transition-colors">Syarat & Ketentuan</a></li>
-        </ul>
-      </div>
-
-    </div>
-
-    <!-- Copyright Divider -->
-    <div class="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 gap-4">
-      <p>&copy; 2026 Pena-Guru. Hak Cipta Dilindungi Undang-Undang.</p>
-      <p class="text-slate-500">Dikembangkan untuk efisiensi administrasi pendidikan Indonesia.</p>
     </div>
   </div>
 </footer>
+
+<!-- ========================================== -->
+<!-- INTEGRASI SKRIP JAVASCRIPT (URUTAN WAJIB)  -->
+<!-- ========================================== -->
+<!-- 1. Handler Autentikasi Google & Sync Database Sheets -->
+<script src="js/services/auth-handler.js"></script>
+
+<!-- 2. Handler Utama AI Proxy & Master Prompt Generator -->
+<script src="js/core/ai-handler.js"></script>
+
+<!-- 3. Pembaca & Pemindai QR Code Tier -->
+<script src="js/auth/qr-scanner.js"></script>
+
+<!-- 4. Controller Logika UI Dashboard Utama -->
+<script src="js/main.js"></script>
